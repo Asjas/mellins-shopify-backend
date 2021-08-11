@@ -1,0 +1,13 @@
+{
+  "comments": false,
+  "presets": ["@babel/preset-typescript"],
+  "plugins": [
+    "@babel/plugin-syntax-top-level-await",
+    [
+      "module-extension-resolver",
+      {
+        "dstExtension": ".mjs"
+      }
+    ]
+  ]
+}

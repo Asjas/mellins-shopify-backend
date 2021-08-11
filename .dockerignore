@@ -1,0 +1,14 @@
+node_modules/
+dist/
+test/
+.vscode/
+*.md
+.git
+.gitignore
+.eslintrc
+.eslintignore
+.prettierrc.js
+.taprc
+.DS_Store
+.env
+.env.sample
