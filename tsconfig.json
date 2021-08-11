@@ -5,11 +5,13 @@
     "incremental": true,
     "target": "ES2021",
     "module": "ESNext",
-    "lib": ["ESNEXT"],
+    "lib": ["dom", "dom.iterable", "ESNEXT"],
     "noEmit": true,
     "moduleResolution": "Node",
+    "jsx": "react-jsx",
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true,
+    "allowSyntheticDefaultImports": true,
+    "forceConsistentCasingInFileNames": true
   }
 }

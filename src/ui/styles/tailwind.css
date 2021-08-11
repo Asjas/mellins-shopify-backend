@@ -1,0 +1,65 @@
+/* purgecss start ignore */
+
+@tailwind base;
+
+h1,
+h2,
+h3,
+h4,
+thead tr th {
+  @apply font-display;
+}
+
+p,
+span,
+ul,
+ol,
+a,
+button,
+tbody tr th,
+tbody tr td {
+  @apply font-body;
+}
+
+thead tr th {
+  @apply text-lg;
+}
+
+tbody tr th,
+tbody tr td {
+  @apply text-base;
+}
+
+tbody span {
+  @apply text-sm;
+}
+
+tbody td span:nth-child(3) {
+  @apply mt-1;
+}
+
+@tailwind components;
+
+.spinner-container {
+  @apply flex items-center justify-center w-screen h-screen max-w-full;
+}
+
+a[href*="/contact-lens/"] {
+  @apply inline-flex items-center px-4 py-3 leading-4 text-white no-underline transition duration-150 ease-in-out border border-transparent rounded-md bg-primary;
+}
+
+a[href*="/contact-lens/"]:hover {
+  @apply bg-primary;
+}
+
+a[href*="/contact-lens/"]:focus {
+  @apply outline-none border-primary;
+}
+
+a[href*="/contact-lens/"]:active {
+  @apply bg-primary;
+}
+
+/* purgecss end ignore */
+
+@tailwind utilities;

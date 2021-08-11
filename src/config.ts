@@ -11,6 +11,10 @@ const schema = S.object()
   .prop("SHOPIFY_HOST", S.string())
   .prop("SHOPIFY_ACCESS_TOKEN", S.string())
   .prop("SHOPIFY_GRAPHQL_PREFIX", S.string())
+  .prop("MELLINS_DB_HOST", S.string())
+  .prop("MELLINS_DB_USER", S.string())
+  .prop("MELLINS_DB_PASS", S.string())
+  .prop("MELLINS_DB", S.string())
   .prop("MAIL_HOST", S.string())
   .prop("MAIL_PORT", S.number())
   .prop("MAIL_USER", S.string())
@@ -27,6 +31,10 @@ export type Config = {
   SHOPIFY_HOST: string;
   SHOPIFY_ACCESS_TOKEN: string;
   SHOPIFY_GRAPHQL_PREFIX: string;
+  MELLINS_DB_HOST: string;
+  MELLINS_DB_USER: string;
+  MELLINS_DB_PASS: string;
+  MELLINS_DB: string;
   MAIL_HOST: string;
   MAIL_PORT: number;
   MAIL_USER: string;
