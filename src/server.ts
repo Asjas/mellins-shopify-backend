@@ -20,6 +20,7 @@ async function createServer(config: Config) {
       prettyPrint: config.PRETTY_PRINT,
     },
     ...config,
+    pluginTimeout: 50000,
   };
 
   const server = Fastify(opts);
@@ -28,24 +29,24 @@ async function createServer(config: Config) {
     origin: "*",
   });
 
-  // await server.register(FastifyHelmet, {
-  //   frameguard: false,
-  //   contentSecurityPolicy: {
-  //     directives: {
-  //       defaultSrc: ["'self'"],
-  //       baseUri: ["'self'"],
-  //       connectSrc: ["'self'", "https:"],
-  //       fontSrc: ["'self'", "https:", "data:"],
-  //       frameAncestors: ["'self'", "https://online-mellins.myshopify.com"],
-  //       imgSrc: ["'self'", "data:"],
-  //       objectSrc: ["'self'"],
-  //       frameSrc: ["'self'"],
-  //       styleSrc: ["'self'", "https:", "'unsafe-inline'"],
-  //       scriptSrc: ["'self'", "'unsafe-eval'"],
-  //       scriptSrcAttr: ["'self'"],
-  //     },
-  //   },
-  // });
+  await server.register(FastifyHelmet, {
+    frameguard: false,
+    contentSecurityPolicy: {
+      directives: {
+        defaultSrc: ["'self'"],
+        baseUri: ["'self'"],
+        connectSrc: ["'self'", "https:"],
+        fontSrc: ["'self'", "https:", "data:"],
+        frameAncestors: ["'self'", "https://online-mellins.myshopify.com"],
+        imgSrc: ["'self'", "data:"],
+        objectSrc: ["'self'"],
+        frameSrc: ["'self'"],
+        styleSrc: ["'self'", "https:", "'unsafe-inline'"],
+        scriptSrc: ["'self'", "'unsafe-eval'"],
+        scriptSrcAttr: ["'self'"],
+      },
+    },
+  });
 
   await server.register(FastifyNext, {
     dev: config.NODE_ENV === "development",

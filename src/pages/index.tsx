@@ -39,14 +39,6 @@ const GET_SINGLE_CONTACT_LENS_ORDER = gql`
   }
 `;
 
-const ALL_CONTACT_LENS_VARIABLES = {
-  first: 10,
-  last: null,
-  query: "CONTACT_LENSES Unfulfilled",
-  before: null,
-  after: null,
-};
-
 const GET_ALL_CONTACT_LENS_ORDERS = gql`
   query GET_ALL_CONTACT_LENS_ORDERS($first: Int, $last: Int, $query: String!, $before: String, $after: String) {
     orders(first: $first, last: $last, query: $query, reverse: true, before: $before, after: $after) {
@@ -81,20 +73,6 @@ const GET_ALL_CONTACT_LENS_ORDERS = gql`
   }
 `;
 
-function setNextPageCursor(data) {
-  ALL_CONTACT_LENS_VARIABLES.before = null;
-  ALL_CONTACT_LENS_VARIABLES.after = data.orders.edges[9].cursor;
-  ALL_CONTACT_LENS_VARIABLES.first = 10;
-  ALL_CONTACT_LENS_VARIABLES.last = null;
-}
-
-function setPreviousPageCursor(data) {
-  ALL_CONTACT_LENS_VARIABLES.before = data.orders.edges[0].cursor;
-  ALL_CONTACT_LENS_VARIABLES.after = null;
-  ALL_CONTACT_LENS_VARIABLES.first = null;
-  ALL_CONTACT_LENS_VARIABLES.last = 10;
-}
-
 function toggleQueryType(isAllOrders) {
   if (isAllOrders) {
     ALL_CONTACT_LENS_VARIABLES.query = "CONTACT_LENSES";
@@ -104,16 +82,29 @@ function toggleQueryType(isAllOrders) {
 }
 
 function Home() {
+  const [orderToggle, setOrderToggle] = useCounterState(false);
   const [orderFieldValue, setOrderField] = useState("");
-  const [getOrders, { loading: isLoading, error, data }] = useLazyQuery(GET_ALL_CONTACT_LENS_ORDERS, {
-    variables: ALL_CONTACT_LENS_VARIABLES,
-  });
+  const [getOrders, { loading: isLoading, error, data }] = useLazyQuery(GET_ALL_CONTACT_LENS_ORDERS);
   const [getOrder, { loading: isSingleLoading, data: singleData }] = useLazyQuery(GET_SINGLE_CONTACT_LENS_ORDER);
+
+  const handleToggle = () => {
+    setOrderToggle((prevStoredValue) => !prevStoredValue);
+    toggleQueryType(orderToggle);
+    getOrders();
+  };
 
   const handleChange = useCallback((newValue) => setOrderField(newValue), []);
 
   useEffect(() => {
-    getOrders();
+    getOrders({
+      variables: {
+        before: null,
+        after: null,
+        query: `${orderToggle ? "CONTACT_LENSES" : "CONTACT_LENSES Unfulfilled"}`,
+        first: 10,
+        last: null,
+      },
+    });
   }, []);
 
   const GET_ORDER = () => {
@@ -133,13 +124,27 @@ function Home() {
   if (error) return <p>{error.message}</p>;
 
   function navigatePreviousPage() {
-    setPreviousPageCursor(data);
-    getOrders();
+    getOrders({
+      variables: {
+        before: data.orders.edges[0].cursor,
+        after: null,
+        query: `${orderToggle ? "CONTACT_LENSES" : "CONTACT_LENSES Unfulfilled"}`,
+        first: null,
+        last: 10,
+      },
+    });
   }
 
   function navigateNextPage() {
-    setNextPageCursor(data);
-    getOrders();
+    getOrders({
+      variables: {
+        before: null,
+        after: data.orders.edges[9].cursor,
+        query: `${orderToggle ? "CONTACT_LENSES" : "CONTACT_LENSES Unfulfilled"}`,
+        first: 10,
+        last: null,
+      },
+    });
   }
 
   const RenderTable = () => {
@@ -187,7 +192,7 @@ function Home() {
               </Button>
             </div>
           </div>
-          <OrdersToggle toggleQueryType={toggleQueryType} getOrders={getOrders} />
+          <OrdersToggle orderToggle={orderToggle} handleToggle={handleToggle} />
           <RenderTable />
         </Layout.Section>
       </Layout>

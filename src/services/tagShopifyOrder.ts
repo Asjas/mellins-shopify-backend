@@ -14,19 +14,19 @@ export default async function tagShopifyOrder(orderId: number, updatedTags) {
     };
 
     const UPDATE_ORDER_TAGS_SHOPIFY = `
-    mutation UPDATE_ORDER_TAGS_SHOPIFY($input: OrderInput!) {
-      orderUpdate(input: $input) {
-        order {
-          id
-          tags
-        }
-        userErrors {
-          field
-          message
+      mutation UPDATE_ORDER_TAGS_SHOPIFY($input: OrderInput!) {
+        orderUpdate(input: $input) {
+          order {
+            id
+            tags
+          }
+          userErrors {
+            field
+            message
+          }
         }
       }
-    }
-  `;
+    `;
 
     const { body } = await shopifyClient.request({
       method: "POST",

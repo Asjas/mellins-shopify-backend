@@ -1,19 +1,8 @@
 import { SettingToggle, TextStyle } from "@shopify/polaris";
-import createPersistedState from "use-persisted-state";
 
-const useCounterState = createPersistedState("orders");
-
-function ContactLensOrdersToggle({ toggleQueryType, getOrders }) {
-  const [storedValue, setValue] = useCounterState(false);
-
-  const handleToggle = () => {
-    setValue((prevStoredValue) => !prevStoredValue);
-    toggleQueryType(storedValue);
-    getOrders();
-  };
-
-  const contentStatus = storedValue ? "Unfulfilled" : "All";
-  const textStatus = storedValue ? "unfulfilled" : "all";
+function ContactLensOrdersToggle({ orderToggle, handleToggle }) {
+  const contentStatus = orderToggle ? "Unfulfilled" : "All";
+  const textStatus = orderToggle ? "unfulfilled" : "all";
 
   return (
     <SettingToggle
@@ -21,7 +10,7 @@ function ContactLensOrdersToggle({ toggleQueryType, getOrders }) {
         content: contentStatus,
         onAction: handleToggle,
       }}
-      enabled={storedValue}
+      enabled={orderToggle}
     >
       Showing <TextStyle variation="strong">{textStatus}</TextStyle> contact lens orders.
     </SettingToggle>

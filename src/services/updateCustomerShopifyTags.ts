@@ -17,19 +17,19 @@ async function updateCustomerShopifyTags(id: number) {
     };
 
     const UPDATE_CUSTOMER_TAGS_SHOPIFY = `
-    mutation UPDATE_CUSTOMER_TAGS_SHOPIFY($input: CustomerInput!) {
-      customerUpdate(input: $input) {
-        customer {
-          id
-          tags
-        }
-        userErrors {
-          field
-          message
+      mutation UPDATE_CUSTOMER_TAGS_SHOPIFY($input: CustomerInput!) {
+        customerUpdate(input: $input) {
+          customer {
+            id
+            tags
+          }
+          userErrors {
+            field
+            message
+          }
         }
       }
-    }
-  `;
+    `;
 
     const { body } = await shopifyClient.request({
       method: "POST",

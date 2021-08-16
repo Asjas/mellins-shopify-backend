@@ -41,7 +41,9 @@ export type Config = {
   MAIL_PASS: string;
 };
 
-export default envSchema({
+const EnvSchema: Config = envSchema({
   schema,
   dotenv: true,
-}) as Config;
+});
+
+export default EnvSchema;

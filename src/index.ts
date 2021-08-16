@@ -2,15 +2,14 @@ import createServer from "./server";
 import config from "./config";
 
 async function start() {
-try {
+  try {
+    const PORT = Number(config.PORT) || 3000;
+    const app = await createServer(config);
 
-  const PORT = Number(config.PORT) || 3000;
-  const app = await createServer(config);
-
-  await app.listen(PORT);
-} catch(err) {
-  console.error(err);
-}
+    await app.listen(PORT);
+  } catch (err) {
+    console.error(err);
+  }
 }
 
 void start();

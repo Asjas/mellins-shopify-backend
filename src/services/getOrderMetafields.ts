@@ -11,22 +11,22 @@ export default async function getOrderMetafields(id: number) {
     };
 
     const GET_ORDER_METAFIELDS = `
-    query GET_ORDER_METAFIELDS($id: ID!) {
-      order(id: $id) {
-        id
-        tags
-        metafields(namespace: "CONTACT_LENS_ORDER", first: 25) {
-          edges {
-            node {
-              id
-              key
-              value
+      query GET_ORDER_METAFIELDS($id: ID!) {
+        order(id: $id) {
+          id
+          tags
+          metafields(namespace: "CONTACT_LENS_ORDER", first: 25) {
+            edges {
+              node {
+                id
+                key
+                value
+              }
             }
           }
         }
       }
-    }
-  `;
+    `;
 
     const { body } = await shopifyClient.request({
       method: "POST",
