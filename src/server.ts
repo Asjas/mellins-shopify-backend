@@ -1,20 +1,17 @@
-import Fastify, { FastifyServerOptions } from "fastify";
-import { dirname, join } from "path";
-import { fileURLToPath } from "url";
-import FastifyHelmet from "fastify-helmet";
-import FastifyCors from "fastify-cors";
-import FastifyCookie from "fastify-cookie";
-import FastifySession from "fastify-session";
 import AutoLoad from "fastify-autoload";
-import FastifyNodemailer from "fastify-nodemailer";
-import FastifyHealthcheck from "fastify-healthcheck";
+import Fastify, { FastifyServerOptions } from "fastify";
+import FastifyCookie from "fastify-cookie";
+import FastifyCors from "fastify-cors";
 import FastifyFavicon from "fastify-favicon";
+import FastifyHealthcheck from "fastify-healthcheck";
+import FastifyHelmet from "fastify-helmet";
+import FastifyNext from "fastify-nextjs";
+import FastifyNodemailer from "fastify-nodemailer";
+import FastifySession from "fastify-session";
 import ShopifyGraphQLProxy, { ApiVersion } from "fastify-shopify-graphql-proxy";
+import { join } from "path";
 
 import type { Config } from "./config";
-
-const __filename = fileURLToPath(import.meta.url); // eslint-disable-line
-const __dirname = dirname(__filename); // eslint-disable-line
 
 async function createServer(config: Config) {
   const opts: FastifyServerOptions = {
@@ -31,23 +28,40 @@ async function createServer(config: Config) {
     origin: "*",
   });
 
-  await server.register(FastifyHelmet, {
-    frameguard: false,
-    contentSecurityPolicy: {
-      directives: {
-        defaultSrc: ["'self'"],
-        baseUri: ["'self'"],
-        connectSrc: ["'self'", "https:"],
-        fontSrc: ["'self'", "https:", "data:"],
-        frameAncestors: ["'self'", "https://online-mellins.myshopify.com"],
-        imgSrc: ["'self'", "data:"],
-        objectSrc: ["'self'"],
-        frameSrc: ["'self'"],
-        styleSrc: ["'self'", "https:", "'unsafe-inline'"],
-        scriptSrc: ["'self'", "'unsafe-eval'"],
-        scriptSrcAttr: ["'self'"],
-      },
-    },
+  // await server.register(FastifyHelmet, {
+  //   frameguard: false,
+  //   contentSecurityPolicy: {
+  //     directives: {
+  //       defaultSrc: ["'self'"],
+  //       baseUri: ["'self'"],
+  //       connectSrc: ["'self'", "https:"],
+  //       fontSrc: ["'self'", "https:", "data:"],
+  //       frameAncestors: ["'self'", "https://online-mellins.myshopify.com"],
+  //       imgSrc: ["'self'", "data:"],
+  //       objectSrc: ["'self'"],
+  //       frameSrc: ["'self'"],
+  //       styleSrc: ["'self'", "https:", "'unsafe-inline'"],
+  //       scriptSrc: ["'self'", "'unsafe-eval'"],
+  //       scriptSrcAttr: ["'self'"],
+  //     },
+  //   },
+  // });
+
+  await server.register(FastifyNext, {
+    dev: config.NODE_ENV === "development",
+  });
+
+  await server.register((fastify, _opts, done) => {
+    // @ts-ignore
+    fastify.next("/");
+    // @ts-ignore
+    fastify.next("/contact-lens/:id");
+    // @ts-ignore
+    fastify.next("/customers/verify");
+    // @ts-ignore
+    fastify.next("/orders/invoice");
+
+    done();
   });
 
   await server.register(FastifyFavicon);
@@ -100,13 +114,11 @@ async function createServer(config: Config) {
   await server.register(AutoLoad, {
     dir: join(__dirname, "plugins"),
     dirNameRoutePrefix: false,
-    forceESM: true,
   });
 
   await server.register(AutoLoad, {
     dir: join(__dirname, "routes"),
     dirNameRoutePrefix: false,
-    forceESM: true,
   });
 
   return server;

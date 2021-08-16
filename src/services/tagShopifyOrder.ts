@@ -1,14 +1,19 @@
-export default async function tagShopifyOrder(orderId, updatedTags) {
-  const { HOST, GRAPHQL_PREFIX } = process.env;
+/* eslint consistent-return: "off" */
 
-  const variables = {
-    input: {
-      id: `gid://shopify/Order/${orderId}`,
-      tags: updatedTags,
-    },
-  };
+import shopifyClient from "../api/shopifyClient";
 
-  const UPDATE_ORDER_TAGS_SHOPIFY = `
+import config from "../config";
+
+export default async function tagShopifyOrder(orderId: number, updatedTags) {
+  try {
+    const variables = {
+      input: {
+        id: `gid://shopify/Order/${orderId}`,
+        tags: updatedTags,
+      },
+    };
+
+    const UPDATE_ORDER_TAGS_SHOPIFY = `
     mutation UPDATE_ORDER_TAGS_SHOPIFY($input: OrderInput!) {
       orderUpdate(input: $input) {
         order {
@@ -23,22 +28,27 @@ export default async function tagShopifyOrder(orderId, updatedTags) {
     }
   `;
 
-  const client = new GraphQLClient(`${HOST}${GRAPHQL_PREFIX}/graphql`);
-
-  const orderData = await client
-    .request(UPDATE_ORDER_TAGS_SHOPIFY, variables)
-    .then((data) => {
-      if (data.userErrors) {
-        throw new Error(data.userErrors);
-      }
-
-      const { order } = data;
-
-      return order;
-    })
-    .catch((error) => {
-      console.error(error);
+    const { body } = await shopifyClient.request({
+      method: "POST",
+      path: `${config.SHOPIFY_GRAPHQL_PREFIX}/graphql`,
+      headers: {
+        "Content-Type": "application/json; charset=UTF-8",
+      },
+      body: JSON.stringify({ query: UPDATE_ORDER_TAGS_SHOPIFY, variables }),
     });
 
-  return orderData;
+    let data = "";
+
+    for await (const chunk of body) {
+      data += chunk;
+    }
+
+    const parsedData = JSON.parse(data);
+
+    console.log("customer updated data", parsedData);
+
+    return parsedData;
+  } catch (err) {
+    console.error(err);
+  }
 }

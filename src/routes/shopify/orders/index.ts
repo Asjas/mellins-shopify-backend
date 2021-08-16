@@ -4,7 +4,7 @@ import createOrderHandler from "./createOrder";
 import updateOrderHandler from "./updateOrder";
 import fullfilledOrderHandler from "./fullfilledOrder";
 
-export default function ordersWebhooks(fastify: FastifyInstance) {
+export default function ordersWebhooks(fastify: FastifyInstance, _opts, done) {
   fastify.route({
     method: "POST",
     url: "/webhooks/orders/create",
@@ -22,4 +22,6 @@ export default function ordersWebhooks(fastify: FastifyInstance) {
     url: "/webhooks/orders/fullfilled",
     handler: fullfilledOrderHandler,
   });
+
+  done();
 }

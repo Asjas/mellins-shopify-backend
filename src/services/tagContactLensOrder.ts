@@ -1,44 +1,54 @@
+/* eslint consistent-return: "off" */
+
+import shopifyClient from "../api/shopifyClient";
+
+import config from "../config";
+
 export default async function tagContactLensOrder(id: number, updatedTags) {
-  const { HOST, GRAPHQL_PREFIX } = process.env;
+  try {
+    const variables = {
+      input: {
+        id: `gid://shopify/Order/${id}`,
+        tags: updatedTags,
+      },
+    };
 
-  const variables = {
-    input: {
-      id: `gid://shopify/Order/${id}`,
-      tags: updatedTags,
-    },
-  };
-
-  const UPDATE_ORDER_TAGS_SHOPIFY = `
-    mutation UPDATE_ORDER_TAGS_SHOPIFY($input: OrderInput!) {
-      orderUpdate(input: $input) {
-        order {
-          id
-          tags
-        }
-        userErrors {
-          field
-          message
+    const UPDATE_ORDER_TAGS_SHOPIFY = `
+      mutation UPDATE_ORDER_TAGS_SHOPIFY($input: OrderInput!) {
+        orderUpdate(input: $input) {
+          order {
+            id
+            tags
+          }
+          userErrors {
+            field
+            message
+          }
         }
       }
-    }
-  `;
+    `;
 
-  const client = new GraphQLClient(`${HOST}${GRAPHQL_PREFIX}/graphql`);
-
-  const orderData = await client
-    .request(UPDATE_ORDER_TAGS_SHOPIFY, variables)
-    .then((data) => {
-      if (data.userErrors) {
-        throw new Error(data.userErrors);
-      }
-
-      const { order } = data;
-
-      return order;
-    })
-    .catch((error) => {
-      console.error(error);
+    const { body } = await shopifyClient.request({
+      method: "POST",
+      path: `${config.SHOPIFY_GRAPHQL_PREFIX}/graphql`,
+      headers: {
+        "Content-Type": "application/json; charset=UTF-8",
+      },
+      body: JSON.stringify({ query: UPDATE_ORDER_TAGS_SHOPIFY, variables }),
     });
 
-  return orderData;
+    let data = "";
+
+    for await (const chunk of body) {
+      data += chunk;
+    }
+
+    const parsedData = JSON.parse(data);
+
+    console.log("customer updated data", parsedData);
+
+    return parsedData;
+  } catch (err) {
+    console.error(err);
+  }
 }

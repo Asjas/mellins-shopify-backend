@@ -5,6 +5,7 @@ export const calculateDefaultValues = (metafields) => {
     const { key, value } = currentValue.node;
 
     accum[key] = value;
+
     return accum;
   }, {});
 
@@ -23,7 +24,7 @@ export const getOptomName = async (data) => {
   return null;
 };
 
-export const isOrderApproved = async (data) => {
+export const getOrderApproved = async (data) => {
   if (!data.metafields) return null;
 
   const metafieldObject = await calculateDefaultValues(data.metafields);
@@ -35,7 +36,7 @@ export const isOrderApproved = async (data) => {
   return false;
 };
 
-export const isOrderStatusReady = async (data) => {
+export const getOrderStatusReady = async (data) => {
   if (!data.metafields) return null;
 
   const metafieldObject = await calculateDefaultValues(data.metafields);
@@ -50,7 +51,7 @@ export const isOrderStatusReady = async (data) => {
   return false;
 };
 
-export const isIBTRequested = async (data) => {
+export const getIBTRequested = async (data) => {
   if (!data.metafields) return null;
 
   const metafieldObject = await calculateDefaultValues(data.metafields);
@@ -62,7 +63,7 @@ export const isIBTRequested = async (data) => {
   return false;
 };
 
-export const isRefundRequested = async (data) => {
+export const getRefundRequested = async (data) => {
   if (!data.metafields) return null;
 
   const metafieldObject = await calculateDefaultValues(data.metafields);
@@ -74,7 +75,7 @@ export const isRefundRequested = async (data) => {
   return false;
 };
 
-export const isVoucherRequested = async (data) => {
+export const getVoucherRequested = async (data) => {
   if (!data.metafields) return null;
 
   const metafieldObject = await calculateDefaultValues(data.metafields);

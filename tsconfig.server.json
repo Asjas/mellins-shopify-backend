@@ -1,0 +1,9 @@
+{
+  "extends": "./tsconfig",
+  "compilerOptions": {
+    "module": "commonjs",
+    "isolatedModules": false
+  },
+  "types": "fastify-shopify-graphql-proxy",
+  "exclude": ["node_modules", "postcss.config.js"]
+}

@@ -126,6 +126,14 @@ const orderStatusColumn = (tableRow) => {
   return statusBadge;
 };
 
+const shippingSupplierColumn = (tableRow) => {
+  const { metafields } = tableRow?.node;
+
+  const metafieldObject = calculateDefaultValues(metafields);
+
+  return metafieldObject?.shippingSupplier;
+};
+
 const approvedByColumn = (tableRow) => {
   const { metafields } = tableRow?.node;
 
@@ -142,7 +150,13 @@ const orderReferenceColumn = (tableRow) => {
   return metafieldObject?.orderReference;
 };
 
-export default function ContactLensOrdersTable({ tableData }) {
+export default function ContactLensOrdersTable({
+  tableData,
+  hasPreviousPage,
+  navigatePreviousPage,
+  hasNextPage,
+  navigateNextPage,
+}) {
   const rows = tableData.map((tableRow) => {
     const rowData = [];
     const date = format(new Date(tableRow?.node?.createdAt), "dd MMMM yyyy");
@@ -157,6 +171,7 @@ export default function ContactLensOrdersTable({ tableData }) {
       tableRow?.node?.name,
       orderReferenceColumn(tableRow),
       orderStatusColumn(tableRow),
+      shippingSupplierColumn(tableRow),
       approvedByColumn(tableRow),
       link,
     );
@@ -168,15 +183,15 @@ export default function ContactLensOrdersTable({ tableData }) {
     return (
       <Pagination
         label={`Showing ${rows.length} results`}
-        hasPrevious={false}
+        hasPrevious={hasPreviousPage}
         previousTooltip="Show previous orders"
         onPrevious={() => {
-          console.log("Previous");
+          navigatePreviousPage();
         }}
-        hasNext={false}
+        hasNext={hasNextPage}
         nextTooltip="Show next orders"
         onNext={() => {
-          console.log("Next");
+          navigateNextPage();
         }}
       />
     );
@@ -185,7 +200,7 @@ export default function ContactLensOrdersTable({ tableData }) {
   return (
     <Card>
       <DataTable
-        columnContentTypes={["text", "text", "text", "text", "text", "text", "text", "text", "text"]}
+        columnContentTypes={["text", "text", "text", "text", "text", "text", "text", "text", "text", "text"]}
         headings={[
           "Order Date",
           "Name",
@@ -194,6 +209,7 @@ export default function ContactLensOrdersTable({ tableData }) {
           "Order ID",
           "Order Reference",
           "Order Status",
+          "Shipping Supplier",
           "Approved By",
           "Verify Order",
         ]}

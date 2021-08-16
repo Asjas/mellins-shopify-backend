@@ -1,8 +1,8 @@
 import { FastifyRequest, FastifyReply } from "fastify";
 
-import { customerInvoiceEmail } from "../../templates/customerInvoiceEmail";
+// import { customerInvoiceEmail } from "../../templates/customerInvoiceEmail";
 
-import { createInvoice } from "../../services/invoices/createInvoice";
+// import { createInvoice } from "../../services/invoices/createInvoice";
 
 export default async function fullfilledOrderHandler(request: FastifyRequest, reply: FastifyReply) {
   const { line_items: clLineItems } = request.body as any;
@@ -51,7 +51,7 @@ export default async function fullfilledOrderHandler(request: FastifyRequest, re
     invoice_nr: orderNumber,
   };
 
-  const generatedInvoice = createInvoice(invoice);
+  // const generatedInvoice = createInvoice(invoice);
 
   const emailContents = {
     orderNumber,
@@ -59,18 +59,18 @@ export default async function fullfilledOrderHandler(request: FastifyRequest, re
     lastName,
   };
 
-  const { html } = await customerInvoiceEmail(emailContents);
+  // const { html } = await customerInvoiceEmail(emailContents);
 
   const message = {
     from: '"Mellins i-Style" online@mellins.co.za',
     replyTo: "online@mellins.co.za",
     to: emailAddress,
     subject: `Mellins i-Style - Invoice for order #${emailContents.orderNumber}`,
-    html,
+    // html,
     attachments: [
       {
         filename: `Invoice-${invoice.invoice_nr}.pdf`,
-        content: generatedInvoice,
+        // content: generatedInvoice,
         contentType: "application/pdf",
       },
     ],

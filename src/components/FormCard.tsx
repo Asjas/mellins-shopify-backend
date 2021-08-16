@@ -1,5 +1,5 @@
-import React, { useEffect } from "react";
-import { useForm, Controller } from "react-hook-form";
+import { useEffect } from "react";
+import { useForm, Controller, useFormState } from "react-hook-form";
 import { Form, FormLayout, TextField, Select } from "@shopify/polaris";
 import isEqual from "lodash.isequal";
 
@@ -173,8 +173,13 @@ function OrderReadyStatusField(props) {
 }
 
 export default function FormCard({ setDirty, handleFormSubmit, setFormData, formData, defaultValues, formSubmitRef }) {
-  const { control, handleSubmit, errors, formState, watch } = useForm({ defaultValues });
-  const { isDirty } = formState;
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+    watch,
+  } = useForm({ defaultValues });
+  const { isDirty } = useFormState({ control });
   const watchedValues = watch();
 
   useEffect(() => {
@@ -190,25 +195,25 @@ export default function FormCard({ setDirty, handleFormSubmit, setFormData, form
       <FormLayout>
         <FormLayout.Group>
           <Controller
-            render={(props) => (
-              <BranchNameField {...props} error={errors?.branchName && "Branch name field is required"} />
+            render={({ field }) => (
+              <BranchNameField {...field} error={errors?.branchName && "Branch name field is required"} />
             )}
             name="branchName"
             control={control}
             rules={{ required: true }}
           />
           <Controller
-            render={(props) => (
-              <AccountNumberField {...props} error={errors?.accountNumber && "Account number field is required"} />
+            render={({ field }) => (
+              <AccountNumberField {...field} error={errors?.accountNumber && "Account number field is required"} />
             )}
             name="accountNumber"
             control={control}
             rules={{ required: true }}
           />
           <Controller
-            render={(props) => (
+            render={({ field }) => (
               <ShippingSupplierField
-                {...props}
+                {...field}
                 error={errors?.shippingSupplier && "Shipping supplier field is required (Moscon, Fourways, etc.)"}
               />
             )}
@@ -219,104 +224,124 @@ export default function FormCard({ setDirty, handleFormSubmit, setFormData, form
         </FormLayout.Group>
         <FormLayout.Group>
           <Controller
-            render={(props) => <LastExaminationDateField {...props} />}
+            render={({ field }) => <LastExaminationDateField {...field} />}
             name="lastExaminationDate"
             control={control}
           />
           <Controller
-            render={(props) => <NextExaminationDateField {...props} />}
+            render={({ field }) => <NextExaminationDateField {...field} />}
             name="nextExaminationDate"
             control={control}
           />
           <Controller
-            render={(props) => <LastPurchaseDateField {...props} />}
+            render={({ field }) => <LastPurchaseDateField {...field} />}
             name="lastPurchaseDate"
             control={control}
           />
         </FormLayout.Group>
         <FormLayout.Group>
           <Controller
-            render={(props) => <InfectionHistoryField {...props} />}
+            render={({ field }) => <InfectionHistoryField {...field} />}
             name="infectionHistory"
             control={control}
           />
-          <Controller render={(props) => <RiskCategoryField {...props} />} name="riskCategory" control={control} />
+          <Controller render={({ field }) => <RiskCategoryField {...field} />} name="riskCategory" control={control} />
           <Controller
-            render={(props) => <ProductVerifiedField {...props} />}
+            render={({ field }) => <ProductVerifiedField {...field} />}
             name="productVerified"
             control={control}
           />
           <Controller
-            render={(props) => <PrescriptionVerifiedField {...props} />}
+            render={({ field }) => <PrescriptionVerifiedField {...field} />}
             name="prescriptionVerified"
             control={control}
           />
         </FormLayout.Group>
         <FormLayout.Group>
           <Controller
-            render={(props) => <DateOfPhonecallField {...props} />}
+            render={({ field }) => <DateOfPhonecallField {...field} />}
             name="dateOfPhonecall"
             control={control}
           />
           <Controller
-            render={(props) => <TimeOfPhonecallField {...props} />}
+            render={({ field }) => <TimeOfPhonecallField {...field} />}
             name="timeOfPhonecall"
             control={control}
           />
           <Controller
-            render={(props) => <NotesOfPhonecallField {...props} />}
+            render={({ field }) => <NotesOfPhonecallField {...field} />}
             name="notesOfPhonecall"
             control={control}
           />
           <Controller
-            render={(props) => <PxArrangementField {...props} />}
+            render={({ field }) => <PxArrangementField {...field} />}
             name="patientArrangement"
             control={control}
           />
         </FormLayout.Group>
         <FormLayout.Group>
-          <Controller render={(props) => <OrderReferenceField {...props} />} name="orderReference" control={control} />
-          <Controller render={(props) => <IBTRequested {...props} />} name="ibtRequested" control={control} />
-          <Controller render={(props) => <TagNumbersForIBTField {...props} />} name="tagNumbersIBT" control={control} />
-          <Controller render={(props) => <IBTReferenceField {...props} />} name="IBTreference" control={control} />
+          <Controller
+            render={({ field }) => <OrderReferenceField {...field} />}
+            name="orderReference"
+            control={control}
+          />
+          <Controller render={({ field }) => <IBTRequested {...field} />} name="ibtRequested" control={control} />
+          <Controller
+            render={({ field }) => <TagNumbersForIBTField {...field} />}
+            name="tagNumbersIBT"
+            control={control}
+          />
+          <Controller render={({ field }) => <IBTReferenceField {...field} />} name="IBTreference" control={control} />
         </FormLayout.Group>
         <FormLayout.Group>
-          <Controller render={(props) => <EyeTestVoucherField {...props} />} name="eyeTestVoucher" control={control} />
           <Controller
-            render={(props) => <VoucherReferenceField {...props} />}
+            render={({ field }) => <EyeTestVoucherField {...field} />}
+            name="eyeTestVoucher"
+            control={control}
+          />
+          <Controller
+            render={({ field }) => <VoucherReferenceField {...field} />}
             name="voucherReference"
             control={control}
           />
           <Controller
-            render={(props) => <AwaitingEyeTestField {...props} />}
+            render={({ field }) => <AwaitingEyeTestField {...field} />}
             name="awaitingEyeTest"
             control={control}
           />
         </FormLayout.Group>
         <FormLayout.Group>
           <Controller
-            render={(props) => <RefundRequestedField {...props} />}
+            render={({ field }) => <RefundRequestedField {...field} />}
             name="refundRequested"
             control={control}
           />
-          <Controller render={(props) => <RefundAmountField {...props} />} name="refundAmount" control={control} />
+          <Controller render={({ field }) => <RefundAmountField {...field} />} name="refundAmount" control={control} />
           <Controller
-            render={(props) => <RefundReferenceField {...props} />}
+            render={({ field }) => <RefundReferenceField {...field} />}
             name="refundReference"
             control={control}
           />
         </FormLayout.Group>
         <FormLayout.Group>
           <Controller
-            render={(props) => (
-              <OptomNameField {...props} error={errors?.optomName && "Optom name field is required"} />
+            render={({ field }) => (
+              <OptomNameField {...field} error={errors?.optomName && "Optom name field is required"} />
             )}
             name="optomName"
             control={control}
             rules={{ required: true }}
           />
-          <Controller render={(props) => <OrderApprovedField {...props} />} name="orderApproved" control={control} />
-          <Controller render={(props) => <OrderReadyStatusField {...props} />} name="orderStatus" control={control} />
+          <Controller
+            render={({ field }) => <OrderApprovedField {...field} />}
+            name="orderApproved"
+            control={control}
+          />
+          <Controller
+            render={({ field }) => <OrderReadyStatusField {...field} />}
+            name="orderStatus"
+            control={control}
+          />
         </FormLayout.Group>
       </FormLayout>
       <button className="hidden" id="submit" type="submit" ref={formSubmitRef}>

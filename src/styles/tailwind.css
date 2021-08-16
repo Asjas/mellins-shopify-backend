@@ -1,5 +1,3 @@
-/* purgecss start ignore */
-
 @tailwind base;
 
 h1,
@@ -59,7 +57,5 @@ a[href*="/contact-lens/"]:focus {
 a[href*="/contact-lens/"]:active {
   @apply bg-primary;
 }
-
-/* purgecss end ignore */
 
 @tailwind utilities;

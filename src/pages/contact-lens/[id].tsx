@@ -8,6 +8,8 @@ import FormCard from "../../components/FormCard";
 import ItemsOrderCard from "../../components/ItemsOrderCard";
 import PageLoadingSpinner from "../../components/PageLoadingSpinner";
 
+export const path = "/contact-lens/:id";
+
 const calculateDefaultValues = (data) => {
   const { metafields } = data.order;
 

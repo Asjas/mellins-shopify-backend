@@ -10,11 +10,11 @@ import tagContactLensOrder from "../../../services/tagContactLensOrder";
 
 import {
   getOptomName,
-  isRefundRequested,
-  isIBTRequested,
-  isVoucherRequested,
-  isOrderApproved,
-  isOrderStatusReady,
+  getRefundRequested,
+  getIBTRequested,
+  getVoucherRequested,
+  getOrderApproved,
+  getOrderStatusReady,
 } from "./utils";
 
 import { SHOPIFY_TAGS } from "../../../@types/shopify";
@@ -33,13 +33,13 @@ export default async function updateOrderHandler(request: FastifyRequest, reply:
     "Inge Loubser": "ingel@mellins.co.za",
   };
 
-  const orderMetafieldsData = await getOrderMetafields(id);
+  const orderMetafieldsData = await getOrderMetafields(orderId);
   const optomName = await getOptomName(orderMetafieldsData);
-  const isRefund = await isRefundRequested(orderMetafieldsData);
-  const isIBT = await isIBTRequested(orderMetafieldsData);
-  const isVoucher = await isVoucherRequested(orderMetafieldsData);
-  const orderApproved = await isOrderApproved(orderMetafieldsData);
-  const isOrderReady = await isOrderStatusReady(orderMetafieldsData);
+  const isRefund = await getRefundRequested(orderMetafieldsData);
+  const isIBT = await getIBTRequested(orderMetafieldsData);
+  const isVoucher = await getVoucherRequested(orderMetafieldsData);
+  const isOrderApproved = await getOrderApproved(orderMetafieldsData);
+  const isOrderReady = await getOrderStatusReady(orderMetafieldsData);
   const optomEmail = optometrists[optomName];
 
   console.log("incoming order update webhook triggered");
@@ -49,7 +49,7 @@ export default async function updateOrderHandler(request: FastifyRequest, reply:
   console.log({ isIBT });
   console.log({ isRefund });
   console.log({ isVoucher });
-  console.log({ orderApproved });
+  console.log({ isOrderApproved });
   console.log({ isOrderReady });
 
   if (orderMetafieldsData.tags.includes(SHOPIFY_TAGS.INTERNAL_ORDER)) {
@@ -144,7 +144,7 @@ export default async function updateOrderHandler(request: FastifyRequest, reply:
   }
 
   if (
-    orderApproved &&
+    isOrderApproved &&
     isOrderReady &&
     !orderMetafieldsData.tags.includes(SHOPIFY_TAGS.APPROVED) &&
     !orderMetafieldsData.tags.includes(SHOPIFY_TAGS.ORDER_READY)
@@ -190,7 +190,7 @@ export default async function updateOrderHandler(request: FastifyRequest, reply:
     return reply.status(200).send();
   }
 
-  if (orderApproved && !orderMetafieldsData.tags.includes(SHOPIFY_TAGS.APPROVED)) {
+  if (isOrderApproved && !orderMetafieldsData.tags.includes(SHOPIFY_TAGS.APPROVED)) {
     const ibtTag = isIBT ? SHOPIFY_TAGS.IBT_REQUESTED : "";
     const refundTag = isRefund ? SHOPIFY_TAGS.REFUND_REQUESTED : "";
     const voucherTag = isVoucher ? SHOPIFY_TAGS.VOUCHER_REQUESTED : "";

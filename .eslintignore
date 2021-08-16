@@ -9,3 +9,7 @@ coverage
 
 # don't lint vscode project settings
 .vscode
+
+# don't lint postcss or tailwind config files
+postcss.config.js
+tailwind.config.js

@@ -1,9 +1,13 @@
-import { useState, useCallback } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { Page, Layout, Button, TextField } from "@shopify/polaris";
-import { useQuery, useLazyQuery, gql } from "@apollo/client";
+import { useLazyQuery, gql } from "@apollo/client";
+import createPersistedState from "use-persisted-state";
 
 import PageLoadingSpinner from "../components/PageLoadingSpinner";
 import OrdersTable from "../components/OrdersTable";
+import OrdersToggle from "../components/OrdersToggle";
+
+const useCounterState = createPersistedState("orders");
 
 const GET_SINGLE_CONTACT_LENS_ORDER = gql`
   query GET_SINGLE_CONTACT_LENS_ORDER($query: String!) {
@@ -35,11 +39,20 @@ const GET_SINGLE_CONTACT_LENS_ORDER = gql`
   }
 `;
 
+const ALL_CONTACT_LENS_VARIABLES = {
+  first: 10,
+  last: null,
+  query: "CONTACT_LENSES Unfulfilled",
+  before: null,
+  after: null,
+};
+
 const GET_ALL_CONTACT_LENS_ORDERS = gql`
-  query GET_ALL_CONTACT_LENS_ORDERS {
-    orders(first: 20, query: "CONTACT_LENSES Unfulfilled", reverse: true) {
+  query GET_ALL_CONTACT_LENS_ORDERS($first: Int, $last: Int, $query: String!, $before: String, $after: String) {
+    orders(first: $first, last: $last, query: $query, reverse: true, before: $before, after: $after) {
       pageInfo {
         hasNextPage
+        hasPreviousPage
       }
       edges {
         cursor
@@ -68,12 +81,40 @@ const GET_ALL_CONTACT_LENS_ORDERS = gql`
   }
 `;
 
+function setNextPageCursor(data) {
+  ALL_CONTACT_LENS_VARIABLES.before = null;
+  ALL_CONTACT_LENS_VARIABLES.after = data.orders.edges[9].cursor;
+  ALL_CONTACT_LENS_VARIABLES.first = 10;
+  ALL_CONTACT_LENS_VARIABLES.last = null;
+}
+
+function setPreviousPageCursor(data) {
+  ALL_CONTACT_LENS_VARIABLES.before = data.orders.edges[0].cursor;
+  ALL_CONTACT_LENS_VARIABLES.after = null;
+  ALL_CONTACT_LENS_VARIABLES.first = null;
+  ALL_CONTACT_LENS_VARIABLES.last = 10;
+}
+
+function toggleQueryType(isAllOrders) {
+  if (isAllOrders) {
+    ALL_CONTACT_LENS_VARIABLES.query = "CONTACT_LENSES";
+  } else {
+    ALL_CONTACT_LENS_VARIABLES.query = "CONTACT_LENSES Unfulfilled";
+  }
+}
+
 function Home() {
   const [orderFieldValue, setOrderField] = useState("");
-  const { loading, error, data } = useQuery(GET_ALL_CONTACT_LENS_ORDERS);
-  const [getOrder, { loading: singleLoading, data: singleData }] = useLazyQuery(GET_SINGLE_CONTACT_LENS_ORDER);
+  const [getOrders, { loading: isLoading, error, data }] = useLazyQuery(GET_ALL_CONTACT_LENS_ORDERS, {
+    variables: ALL_CONTACT_LENS_VARIABLES,
+  });
+  const [getOrder, { loading: isSingleLoading, data: singleData }] = useLazyQuery(GET_SINGLE_CONTACT_LENS_ORDER);
 
   const handleChange = useCallback((newValue) => setOrderField(newValue), []);
+
+  useEffect(() => {
+    getOrders();
+  }, []);
 
   const GET_ORDER = () => {
     if (orderFieldValue.length !== 0) {
@@ -85,23 +126,49 @@ function Home() {
     }
   };
 
-  if (loading) {
+  if (isLoading) {
     return <PageLoadingSpinner />;
   }
 
   if (error) return <p>{error.message}</p>;
 
+  function navigatePreviousPage() {
+    setPreviousPageCursor(data);
+    getOrders();
+  }
+
+  function navigateNextPage() {
+    setNextPageCursor(data);
+    getOrders();
+  }
+
   const RenderTable = () => {
-    if (singleLoading) {
+    if (isSingleLoading) {
       return <PageLoadingSpinner />;
     }
 
     if (singleData) {
-      return <OrdersTable tableData={singleData.orders.edges} />;
+      return (
+        <OrdersTable
+          tableData={singleData.orders.edges}
+          hasPreviousPage={false}
+          navigatePreviousPage={null}
+          hasNextPage={false}
+          navigateNextPage={null}
+        />
+      );
     }
 
     if (data) {
-      return <OrdersTable tableData={data.orders.edges} />;
+      return (
+        <OrdersTable
+          tableData={data.orders.edges}
+          hasPreviousPage={data.orders.pageInfo.hasPreviousPage}
+          navigatePreviousPage={navigatePreviousPage}
+          hasNextPage={data.orders.pageInfo.hasNextPage}
+          navigateNextPage={navigateNextPage}
+        />
+      );
     }
 
     return null;
@@ -120,6 +187,7 @@ function Home() {
               </Button>
             </div>
           </div>
+          <OrdersToggle toggleQueryType={toggleQueryType} getOrders={getOrders} />
           <RenderTable />
         </Layout.Section>
       </Layout>

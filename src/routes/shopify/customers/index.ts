@@ -8,7 +8,7 @@ interface IBody {
   note: string;
 }
 
-export default function customersWebhooks(fastify: FastifyInstance) {
+export default function customersWebhooks(fastify: FastifyInstance, _opts, done) {
   fastify.post<{ Body: IBody }>("/webhooks/customers/create", async (request, reply) => {
     const { id, note: idNumber } = request.body;
 
@@ -21,4 +21,6 @@ export default function customersWebhooks(fastify: FastifyInstance) {
     // reply to shopify to stop the webhook from spamming
     await reply.status(200).send();
   });
+
+  done();
 }

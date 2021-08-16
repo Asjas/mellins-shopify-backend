@@ -1,11 +1,16 @@
+/* eslint consistent-return: "off" */
+
+import shopifyClient from "../api/shopifyClient";
+
+import config from "../config";
+
 export default async function getOrderMetafields(id: number) {
-  const { HOST, GRAPHQL_PREFIX } = process.env;
+  try {
+    const variables = {
+      id: `gid://shopify/Order/${id}`,
+    };
 
-  const variables = {
-    id: `gid://shopify/Order/${id}`,
-  };
-
-  const GET_ORDER_METAFIELDS = `
+    const GET_ORDER_METAFIELDS = `
     query GET_ORDER_METAFIELDS($id: ID!) {
       order(id: $id) {
         id
@@ -23,22 +28,27 @@ export default async function getOrderMetafields(id: number) {
     }
   `;
 
-  const client = new GraphQLClient(`${HOST}${GRAPHQL_PREFIX}/graphql`);
-
-  const orderData = await client
-    .request(GET_ORDER_METAFIELDS, variables)
-    .then((data) => {
-      if (data.userErrors) {
-        throw new Error(data.userErrors);
-      }
-
-      const { order } = data;
-
-      return order;
-    })
-    .catch((error) => {
-      console.error(error);
+    const { body } = await shopifyClient.request({
+      method: "POST",
+      path: `${config.SHOPIFY_GRAPHQL_PREFIX}/graphql`,
+      headers: {
+        "Content-Type": "application/json; charset=UTF-8",
+      },
+      body: JSON.stringify({ query: GET_ORDER_METAFIELDS, variables }),
     });
 
-  return orderData;
+    let data = "";
+
+    for await (const chunk of body) {
+      data += chunk;
+    }
+
+    const parsedData = JSON.parse(data);
+
+    console.log("customer updated data", parsedData);
+
+    return parsedData;
+  } catch (err) {
+    console.error(err);
+  }
 }

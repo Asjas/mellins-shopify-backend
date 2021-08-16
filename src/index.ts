@@ -1,7 +1,16 @@
 import createServer from "./server";
 import config from "./config";
 
-const PORT = Number(config.PORT) || 3000;
-const app = await createServer(config);
+async function start() {
+try {
 
-await app.listen(PORT);
+  const PORT = Number(config.PORT) || 3000;
+  const app = await createServer(config);
+
+  await app.listen(PORT);
+} catch(err) {
+  console.error(err);
+}
+}
+
+void start();
