@@ -63,19 +63,11 @@ export default async function updateCustomerShopifyData(
 ) {
   try {
     const customer = await getCustomerFromShopify(id);
-
-    console.log({ customer });
-
     const metafields = calculateMetafields(customer);
-
-    console.log({ metafields });
-
     const metafieldsVariables = calculateCustomerVariables(metafields, [
-      ["Medical Aid", "Discovery"],
-      ["MA Number", "123456"],
+      ["Medical Aid", medical_aid],
+      ["MA Number", ma_number],
     ]);
-
-    console.log(metafieldsVariables);
 
     const variables = {
       input: {
@@ -130,8 +122,6 @@ export default async function updateCustomerShopifyData(
     }
 
     const parsedData = JSON.parse(data);
-
-    console.log("parsedData", JSON.stringify(parsedData));
 
     return parsedData.data.customerUpdate;
   } catch (err) {
