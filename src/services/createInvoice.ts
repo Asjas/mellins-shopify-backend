@@ -60,7 +60,7 @@ function generateCustomerInformation(doc, invoice) {
     .text("Practice Number:", 50, customerInformationTop + 45)
     .text("0824151", 150, customerInformationTop + 45)
 
-    .font("Helvetica-Bold")
+    .font("Helvetica")
     .text(`Medical Aid: ${invoice.shipping.medical}`, 300, customerInformationTop, { align: "right" })
     .font("Helvetica-Bold")
     .text(invoice.shipping.name, 300, customerInformationTop + 15, { align: "right" })
@@ -71,7 +71,7 @@ function generateCustomerInformation(doc, invoice) {
         invoice.shipping.postal_code
       }`,
       300,
-      customerInformationTop + 40,
+      customerInformationTop + 44,
       { align: "right" },
     )
     .moveDown();
