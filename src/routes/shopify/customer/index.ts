@@ -63,6 +63,8 @@ export default function customersWebhooks(fastify: FastifyInstance, _opts, done)
       maNumber,
     );
 
+    console.log("updatedCustomer", JSON.stringify(updatedCustomer));
+
     const customerFields = {
       first_name: updatedCustomer.first_name,
       last_name: updatedCustomer.last_name,
@@ -72,6 +74,8 @@ export default function customersWebhooks(fastify: FastifyInstance, _opts, done)
       ma_number: updatedCustomer?.metafields?.edges[1]?.node?.value,
       tags: updatedCustomer.tags,
     };
+
+    console.log({ customerFields });
 
     await reply.send(customerFields);
   });
