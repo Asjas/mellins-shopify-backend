@@ -19,7 +19,7 @@ export default function ordersWebhooks(fastify: FastifyInstance, _opts, done) {
           lineItem.title = `${lineItem.title}\n${lineItemProperty}`;
         }
 
-        return updatedLineItems;
+        return lineItem;
       });
 
       const {
@@ -60,7 +60,7 @@ export default function ordersWebhooks(fastify: FastifyInstance, _opts, done) {
           state: province,
           postal_code: zip,
         },
-        items: lineItems,
+        items: updatedLineItems,
         subtotal: subtotalPrice,
         discount: totalDiscounts,
         paid: totalPrice,
