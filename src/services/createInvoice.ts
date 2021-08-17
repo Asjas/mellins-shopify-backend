@@ -63,7 +63,7 @@ function generateCustomerInformation(doc, invoice) {
     .font("Helvetica-Bold")
     .text(`Medical Aid: ${invoice.shipping.medical ?? "None"}`, 300, customerInformationTop, { align: "right" })
     .font("Helvetica-Bold")
-    .text(invoice.shipping.name, 300, customerInformationTop, { align: "right" })
+    .text(invoice.shipping.name, 300, customerInformationTop + 15, { align: "right" })
     .font("Helvetica")
     .text(invoice.shipping.address, 300, customerInformationTop + 15, { align: "right" })
     .text(
