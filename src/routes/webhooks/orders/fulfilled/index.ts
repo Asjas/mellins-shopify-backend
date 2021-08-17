@@ -52,7 +52,9 @@ export default function ordersWebhooks(fastify: FastifyInstance, _opts, done) {
           postal_code: 9301,
         },
         shipping: {
-          medical: `${shopifyMAFields.medical_aid ?? ""} ${shopifyMAFields.ma_number ?? ""}`,
+          medical: `${shopifyMAFields.medical_aid ?? "No Medical Aid"} ${
+            shopifyMAFields.ma_number ?? "No MA Membership Number"
+          }`,
           name,
           address: address1,
           suburb: address2,
