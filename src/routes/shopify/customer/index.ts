@@ -63,19 +63,15 @@ export default function customersWebhooks(fastify: FastifyInstance, _opts, done)
       maNumber,
     );
 
-    console.log("updatedCustomer", JSON.stringify(updatedCustomer));
-
     const customerFields = {
-      first_name: updatedCustomer.first_name,
-      last_name: updatedCustomer.last_name,
-      email: updatedCustomer.email,
-      id_number: updatedCustomer.id_number,
-      medical_aid: updatedCustomer?.metafields?.edges[0]?.node?.value,
-      ma_number: updatedCustomer?.metafields?.edges[1]?.node?.value,
-      tags: updatedCustomer.tags,
+      first_name: updatedCustomer.customer.first_name,
+      last_name: updatedCustomer.customer.last_name,
+      email: updatedCustomer.customer.email,
+      id_number: updatedCustomer.customer.id_number,
+      medical_aid: updatedCustomer?.customer.metafields?.edges[0]?.node?.value,
+      ma_number: updatedCustomer?.customer.metafields?.edges[1]?.node?.value,
+      tags: updatedCustomer.customer.tags,
     };
-
-    console.log({ customerFields });
 
     await reply.send(customerFields);
   });
