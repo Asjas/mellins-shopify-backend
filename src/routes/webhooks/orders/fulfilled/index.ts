@@ -67,6 +67,8 @@ export default function ordersWebhooks(fastify: FastifyInstance, _opts, done) {
         invoice_nr: orderNumber,
       };
 
+      console.log("INVOICE", JSON.stringify(invoice));
+
       const generatedInvoice = createInvoice(invoice);
 
       const emailContents = {
