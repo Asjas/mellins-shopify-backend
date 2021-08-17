@@ -71,7 +71,7 @@ function generateCustomerInformation(doc, invoice) {
         invoice.shipping.postal_code
       }`,
       300,
-      customerInformationTop + 30,
+      customerInformationTop + 50,
       { align: "right" },
     )
     .moveDown();
