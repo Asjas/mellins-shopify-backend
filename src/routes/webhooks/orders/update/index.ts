@@ -47,6 +47,7 @@ export default function ordersWebhooks(fastify: FastifyInstance, _opts, done) {
 
       console.log("incoming order update webhook triggered");
       console.log(`${firstName} ${lastName}`);
+      console.log("orderMetafieldsData", JSON.stringify(orderMetafieldsData));
       console.log({ optomName });
       console.log({ optomEmail });
       console.log({ isIBT });
@@ -60,6 +61,10 @@ export default function ordersWebhooks(fastify: FastifyInstance, _opts, done) {
       }
 
       if (isIBT && !orderMetafieldsData.tags.includes(SHOPIFY_TAGS.IBT_REQUESTED)) {
+        console.log(
+          "orderMetafieldsData.tags.includes(SHOPIFY_TAGS.IBT_REQUESTED)",
+          orderMetafieldsData.tags.includes(SHOPIFY_TAGS.IBT_REQUESTED),
+        );
         const updatedTags = [...orderMetafieldsData.tags, SHOPIFY_TAGS.IBT_REQUESTED];
         await tagContactLensOrder(orderId, updatedTags);
 
