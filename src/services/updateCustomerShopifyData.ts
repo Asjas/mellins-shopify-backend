@@ -6,8 +6,8 @@ import getCustomerFromShopify from "./getCustomerFromShopify";
 
 import config from "../config";
 
-const calculateMetafields = (data) => {
-  const { metafields } = data.customer;
+const calculateMetafields = (customer) => {
+  const { metafields } = customer;
 
   if (metafields.edges.length === 0) return null;
 
