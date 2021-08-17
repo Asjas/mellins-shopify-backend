@@ -56,6 +56,12 @@ export const updateCustomerSchema = {
           id_number: {
             type: "string",
           },
+          medical_aid: {
+            type: "string",
+          },
+          ma_number: {
+            type: "string",
+          },
         },
       },
     },
@@ -80,6 +86,12 @@ export const updateCustomerSchema = {
               type: "string",
             },
             id_number: {
+              type: "string",
+            },
+            medical_aid: {
+              type: "string",
+            },
+            ma_number: {
               type: "string",
             },
           },

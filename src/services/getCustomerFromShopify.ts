@@ -18,6 +18,15 @@ export default async function getCustomerFromShopify(id: number) {
           email
           id_number: note
           tags
+          metafields(namespace: "MEDICAL_AID", first: 2) {
+            edges {
+              node {
+                id
+                key
+                value
+              }
+            }
+          }
         }
       }
     `;

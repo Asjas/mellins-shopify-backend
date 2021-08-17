@@ -43,7 +43,17 @@ export default function customersWebhooks(fastify: FastifyInstance, _opts, done)
       },
     } = request.body;
 
-    const updatedCustomer = await updateCustomerShopifyData(id, firstName, lastName, email, idNumber);
+    const updatedCustomer = await updateCustomerShopifyData(
+      id,
+      firstName,
+      lastName,
+      email,
+      idNumber,
+      medicalAid,
+      maNumber,
+    );
+
+    console.log(updatedCustomer);
 
     await reply.send(updatedCustomer);
   });
