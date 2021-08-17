@@ -29,7 +29,7 @@ interface IBody {
 }
 
 export default function customersWebhooks(fastify: FastifyInstance, _opts, done) {
-  fastify.get<{ Querystring: iQuery }>("/customer", { schema: getCustomerSchema }, async (request, reply) => {
+  fastify.get<{ Querystring: iQuery }>("/shopify/customer", { schema: getCustomerSchema }, async (request, reply) => {
     const { id } = request.query;
 
     const customerData = await getCustomerFromShopify(id);
@@ -37,18 +37,22 @@ export default function customersWebhooks(fastify: FastifyInstance, _opts, done)
     await reply.send(customerData);
   });
 
-  fastify.post<{ Body: ICustomerBody }>("/customer", { schema: updateCustomerSchema }, async (request, reply) => {
-    const {
-      id,
-      state: { first_name: firstName, last_name: lastName, email, id_number: idNumber },
-    } = request.body;
+  fastify.post<{ Body: ICustomerBody }>(
+    "/shopify/customer",
+    { schema: updateCustomerSchema },
+    async (request, reply) => {
+      const {
+        id,
+        state: { first_name: firstName, last_name: lastName, email, id_number: idNumber },
+      } = request.body;
 
-    const updatedCustomer = await updateCustomerShopifyData(id, firstName, lastName, email, idNumber);
+      const updatedCustomer = await updateCustomerShopifyData(id, firstName, lastName, email, idNumber);
 
-    await reply.send(updatedCustomer);
-  });
+      await reply.send(updatedCustomer);
+    },
+  );
 
-  fastify.post<{ Body: IBody }>("/verifyCustomer", async (request, reply) => {
+  fastify.post<{ Body: IBody }>("/shopify/verifyCustomer", async (request, reply) => {
     const { id } = request.body;
 
     const customerData = await getCustomerFromShopify(id);
