@@ -18,8 +18,8 @@ export default async function updateCustomerShopifyData(
     const variables = {
       input: {
         id: `gid://shopify/Customer/${id}`,
-        first_name,
-        last_name,
+        firstName: first_name,
+        lastName: last_name,
         email,
         note: id_number,
         metafields: [
