@@ -7,6 +7,7 @@ async function start() {
     const app = await createServer(config);
 
     await app.listen(PORT);
+    console.log(app.printRoutes());
   } catch (err) {
     console.error(err);
   }

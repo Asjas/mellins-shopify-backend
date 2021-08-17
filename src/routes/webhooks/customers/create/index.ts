@@ -9,7 +9,7 @@ interface IBody {
 }
 
 export default function customersWebhooks(fastify: FastifyInstance, _opts, done) {
-  fastify.post<{ Body: IBody }>("/create", async (request, reply) => {
+  fastify.post<{ Body: IBody }>("/", async (request, reply) => {
     const { id, note: idNumber } = request.body;
 
     const isMellinsPatient = await getCustomerFromAtlasDb(idNumber);

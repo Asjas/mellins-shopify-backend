@@ -22,7 +22,7 @@ import { SHOPIFY_TAGS } from "../../../../@types/shopify";
 export default function ordersWebhooks(fastify: FastifyInstance, _opts, done) {
   fastify.route({
     method: "POST",
-    url: "/update",
+    url: "/",
     handler: async (request: FastifyRequest, reply: FastifyReply) => {
       const {
         id: orderId,

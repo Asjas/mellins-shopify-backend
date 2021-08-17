@@ -12,7 +12,7 @@ interface IBody {
 }
 
 export default function customersWebhooks(fastify: FastifyInstance, _opts, done) {
-  fastify.post<{ Body: IBody }>("/verifyCustomer", async (request, reply) => {
+  fastify.post<{ Body: IBody }>("/", async (request, reply) => {
     const { id } = request.body;
 
     const customerData = await getCustomerFromShopify(id);

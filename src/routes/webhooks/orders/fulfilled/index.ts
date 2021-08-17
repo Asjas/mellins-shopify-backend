@@ -7,7 +7,7 @@ import { customerInvoice } from "../../../../mjml/customerInvoice";
 export default function ordersWebhooks(fastify: FastifyInstance, _opts, done) {
   fastify.route({
     method: "POST",
-    url: "/fulfilled",
+    url: "/",
     handler: async (request: FastifyRequest, reply: FastifyReply) => {
       const { line_items: clLineItems } = request.body as any;
 

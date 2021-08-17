@@ -22,7 +22,7 @@ interface ICustomerBody {
 }
 
 export default function customersWebhooks(fastify: FastifyInstance, _opts, done) {
-  fastify.get<{ Querystring: iQuery }>("/customer", { schema: getCustomerSchema }, async (request, reply) => {
+  fastify.get<{ Querystring: iQuery }>("/", { schema: getCustomerSchema }, async (request, reply) => {
     const { id } = request.query;
 
     const customerData = await getCustomerFromShopify(id);
@@ -30,7 +30,7 @@ export default function customersWebhooks(fastify: FastifyInstance, _opts, done)
     await reply.send(customerData);
   });
 
-  fastify.post<{ Body: ICustomerBody }>("/customer", { schema: updateCustomerSchema }, async (request, reply) => {
+  fastify.post<{ Body: ICustomerBody }>("/", { schema: updateCustomerSchema }, async (request, reply) => {
     const {
       id,
       state: {

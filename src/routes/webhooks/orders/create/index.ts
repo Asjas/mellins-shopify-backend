@@ -8,7 +8,7 @@ import { CONTACT_LENS_VENDORS, SHOPIFY_TAGS } from "../../../../@types/shopify";
 export default function ordersWebhooks(fastify: FastifyInstance, _opts, done) {
   fastify.route({
     method: "POST",
-    url: "/create",
+    url: "/",
     handler: async (request: FastifyRequest, reply: FastifyReply) => {
       const {
         customer: { first_name: firstName, last_name: lastName, tags: customerTags },
