@@ -131,7 +131,7 @@ export default async function updateCustomerShopifyData(
 
     const parsedData = JSON.parse(data);
 
-    console.log(JSON.stringify(parsedData));
+    console.log("parsedData", JSON.stringify(parsedData));
 
     return parsedData.data.customerUpdate;
   } catch (err) {

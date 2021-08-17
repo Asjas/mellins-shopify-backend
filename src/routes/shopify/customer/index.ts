@@ -53,7 +53,7 @@ export default function customersWebhooks(fastify: FastifyInstance, _opts, done)
       maNumber,
     );
 
-    console.log(updatedCustomer);
+    console.log("UPDATED CUSTOMER", JSON.stringify(updatedCustomer));
 
     await reply.send(updatedCustomer);
   });
