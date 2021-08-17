@@ -27,6 +27,8 @@ export default function customersWebhooks(fastify: FastifyInstance, _opts, done)
 
     const customerData = await getCustomerFromShopify(id);
 
+    console.log("customerData", JSON.stringify(customerData));
+
     const customerFields = {
       first_name: customerData.first_name,
       last_name: customerData.last_name,
