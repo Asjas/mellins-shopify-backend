@@ -47,7 +47,7 @@ export default function ordersWebhooks(fastify: FastifyInstance, _opts, done) {
 
       console.log("incoming order update webhook triggered");
       console.log(`${firstName} ${lastName}`);
-      console.log("orderMetafieldsData", JSON.stringify(orderMetafieldsData));
+      console.log("orderMetafieldsData", JSON.stringify(orderMetafieldsData.tags));
       console.log({ optomName });
       console.log({ optomEmail });
       console.log({ isIBT });
@@ -61,10 +61,6 @@ export default function ordersWebhooks(fastify: FastifyInstance, _opts, done) {
       }
 
       if (isIBT && !orderMetafieldsData.tags.includes(SHOPIFY_TAGS.IBT_REQUESTED)) {
-        console.log(
-          "orderMetafieldsData.tags.includes(SHOPIFY_TAGS.IBT_REQUESTED)",
-          orderMetafieldsData.tags.includes(SHOPIFY_TAGS.IBT_REQUESTED),
-        );
         const updatedTags = [...orderMetafieldsData.tags, SHOPIFY_TAGS.IBT_REQUESTED];
         await tagContactLensOrder(orderId, updatedTags);
 
@@ -80,7 +76,7 @@ export default function ordersWebhooks(fastify: FastifyInstance, _opts, done) {
         const message = {
           from: '"Mellins i-Style" online@mellins.co.za',
           replyTo: "online@mellins.co.za",
-          to: ["aj@pienaarconsulting.co.za"],
+          to: ["luzanne@pienaarpartners.co.za", optomEmail, "aj@pienaarconsulting.co.za"],
           subject: `Shopify order #${orderNumber} IBT requested.`,
           html,
         };
@@ -110,7 +106,7 @@ export default function ordersWebhooks(fastify: FastifyInstance, _opts, done) {
         const message = {
           from: '"Mellins i-Style" online@mellins.co.za',
           replyTo: "online@mellins.co.za",
-          to: ["aj@pienaarconsulting.co.za"],
+          to: ["luzanne@pienaarpartners.co.za", optomEmail, "aj@pienaarconsulting.co.za"],
           subject: `Shopify order #${orderNumber} refund requested.`,
           html,
         };
@@ -140,7 +136,7 @@ export default function ordersWebhooks(fastify: FastifyInstance, _opts, done) {
         const message = {
           from: '"Mellins i-Style" online@mellins.co.za',
           replyTo: "online@mellins.co.za",
-          to: ["aj@pienaarconsulting.co.za"],
+          to: ["colette@pienaarpartners.co.za", optomEmail, "aj@pienaarconsulting.co.za"],
           subject: `Shopify order #${orderNumber} voucher requested`,
           html,
         };
@@ -186,7 +182,7 @@ export default function ordersWebhooks(fastify: FastifyInstance, _opts, done) {
         const message = {
           from: '"Mellins i-Style" online@mellins.co.za',
           replyTo: "online@mellins.co.za",
-          to: ["lauren@pienaarpartners.co.za", "aj@pienaarconsulting.co.za", optomName],
+          to: ["lauren@pienaarpartners.co.za", optomName, "aj@pienaarconsulting.co.za"],
           subject: `Shopify Contact Lens order #${orderNumber} ready for collection arrangement`,
           html,
         };
