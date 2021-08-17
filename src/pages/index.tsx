@@ -73,39 +73,59 @@ const GET_ALL_CONTACT_LENS_ORDERS = gql`
   }
 `;
 
-function toggleQueryType(isAllOrders) {
-  if (isAllOrders) {
-    ALL_CONTACT_LENS_VARIABLES.query = "CONTACT_LENSES";
-  } else {
-    ALL_CONTACT_LENS_VARIABLES.query = "CONTACT_LENSES Unfulfilled";
-  }
-}
+const ALL_CONTACT_LENS_VARIABLES = {
+  first: 10,
+  last: null,
+  query: "CONTACT_LENSES Unfulfilled",
+  before: null,
+  after: null,
+};
 
 function Home() {
-  const [orderToggle, setOrderToggle] = useCounterState(false);
+  const [orderToggle] = useCounterState();
   const [orderFieldValue, setOrderField] = useState("");
-  const [getOrders, { loading: isLoading, error, data }] = useLazyQuery(GET_ALL_CONTACT_LENS_ORDERS);
+  const [getOrders, { loading: isLoading, error, data }] = useLazyQuery(GET_ALL_CONTACT_LENS_ORDERS, {
+    variables: ALL_CONTACT_LENS_VARIABLES,
+  });
   const [getOrder, { loading: isSingleLoading, data: singleData }] = useLazyQuery(GET_SINGLE_CONTACT_LENS_ORDER);
 
-  const handleToggle = () => {
-    setOrderToggle((prevStoredValue) => !prevStoredValue);
-    toggleQueryType(orderToggle);
-    getOrders();
-  };
+  function setNextPageCursor(pageData) {
+    ALL_CONTACT_LENS_VARIABLES.before = null;
+    ALL_CONTACT_LENS_VARIABLES.after = pageData.orders.edges[9].cursor;
+    ALL_CONTACT_LENS_VARIABLES.first = 10;
+    ALL_CONTACT_LENS_VARIABLES.last = null;
+  }
+
+  function setPreviousPageCursor(pageData) {
+    ALL_CONTACT_LENS_VARIABLES.before = pageData.orders.edges[0].cursor;
+    ALL_CONTACT_LENS_VARIABLES.after = null;
+    ALL_CONTACT_LENS_VARIABLES.first = null;
+    ALL_CONTACT_LENS_VARIABLES.last = 10;
+  }
+
+  function resetQuery(isAllOrders) {
+    if (isAllOrders) {
+      ALL_CONTACT_LENS_VARIABLES.first = 10;
+      ALL_CONTACT_LENS_VARIABLES.last = null;
+      ALL_CONTACT_LENS_VARIABLES.before = null;
+      ALL_CONTACT_LENS_VARIABLES.after = null;
+      ALL_CONTACT_LENS_VARIABLES.query = "CONTACT_LENSES Unfulfilled";
+    } else {
+      ALL_CONTACT_LENS_VARIABLES.first = 10;
+      ALL_CONTACT_LENS_VARIABLES.last = null;
+      ALL_CONTACT_LENS_VARIABLES.before = null;
+      ALL_CONTACT_LENS_VARIABLES.after = null;
+      ALL_CONTACT_LENS_VARIABLES.query = "CONTACT_LENSES";
+    }
+  }
 
   const handleChange = useCallback((newValue) => setOrderField(newValue), []);
 
   useEffect(() => {
-    getOrders({
-      variables: {
-        before: null,
-        after: null,
-        query: `${orderToggle ? "CONTACT_LENSES" : "CONTACT_LENSES Unfulfilled"}`,
-        first: 10,
-        last: null,
-      },
-    });
-  }, []);
+    resetQuery(orderToggle);
+
+    getOrders();
+  }, [orderToggle]);
 
   const GET_ORDER = () => {
     if (orderFieldValue.length !== 0) {
@@ -124,27 +144,21 @@ function Home() {
   if (error) return <p>{error.message}</p>;
 
   function navigatePreviousPage() {
-    getOrders({
-      variables: {
-        before: data.orders.edges[0].cursor,
-        after: null,
-        query: `${orderToggle ? "CONTACT_LENSES" : "CONTACT_LENSES Unfulfilled"}`,
-        first: null,
-        last: 10,
-      },
-    });
+    if (data.orders.edges.length !== 0) {
+      setPreviousPageCursor(data);
+
+      getOrders();
+    } else {
+      resetQuery(orderToggle);
+
+      getOrders();
+    }
   }
 
   function navigateNextPage() {
-    getOrders({
-      variables: {
-        before: null,
-        after: data.orders.edges[9].cursor,
-        query: `${orderToggle ? "CONTACT_LENSES" : "CONTACT_LENSES Unfulfilled"}`,
-        first: 10,
-        last: null,
-      },
-    });
+    setNextPageCursor(data);
+
+    getOrders();
   }
 
   const RenderTable = () => {
@@ -192,7 +206,7 @@ function Home() {
               </Button>
             </div>
           </div>
-          <OrdersToggle orderToggle={orderToggle} handleToggle={handleToggle} />
+          <OrdersToggle toggleQueryType={resetQuery} getOrders={getOrders} />
           <RenderTable />
         </Layout.Section>
       </Layout>

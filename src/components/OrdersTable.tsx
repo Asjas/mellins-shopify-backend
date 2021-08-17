@@ -197,6 +197,19 @@ export default function ContactLensOrdersTable({
     );
   }
 
+  if (tableData.length === 0) {
+    return (
+      <Card>
+        <DataTable
+          columnContentTypes={["text"]}
+          headings={["Orders"]}
+          rows={[["No orders found"]]}
+          footerContent={<FooterPagination />}
+        />
+      </Card>
+    );
+  }
+
   return (
     <Card>
       <DataTable

@@ -152,14 +152,17 @@ function IndividualContactLensOrder() {
   const [formData, setFormData] = useState({});
   const formSubmitRef = useRef(null);
 
-  const { loading, error, data } = useQuery(GET_CONTACT_LENS_ORDER, {
+  const {
+    loading: isLoading,
+    error,
+    data,
+  } = useQuery(GET_CONTACT_LENS_ORDER, {
     variables: { id: `gid://shopify/Order/${id}` },
   });
 
-  const [updateOrder, { loading: mutationLoading, error: mutationError, data: mutationData }] =
-    useMutation(UPDATE_CONTACT_LENS_ORDER);
+  const [updateOrder, { loading: isMutationLoading }] = useMutation(UPDATE_CONTACT_LENS_ORDER);
 
-  if (loading) {
+  if (isLoading) {
     return <PageLoadingSpinner />;
   }
 
@@ -168,12 +171,13 @@ function IndividualContactLensOrder() {
   const defaultValues = calculateDefaultValues(data);
   const metafields = calculateMetafields(data);
 
-  const handleFormSubmit = () => {
+  const handleFormSubmit = async () => {
     const variables = calculateOrderVariables(metafields, formData);
 
-    updateOrder({ variables: { input: { id: `gid://shopify/Order/${id}`, metafields: variables } } });
-    if (!mutationLoading) {
-      router.push("/");
+    await updateOrder({ variables: { input: { id: `gid://shopify/Order/${id}`, metafields: variables } } });
+
+    if (!isMutationLoading) {
+      await router.push("/");
     }
   };
 

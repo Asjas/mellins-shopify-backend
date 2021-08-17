@@ -108,7 +108,7 @@ async function createServer(config: Config) {
   await server.register(ShopifyGraphQLProxy, {
     shop: config.SHOPIFY_HOST,
     password: config.SHOPIFY_ACCESS_TOKEN,
-    version: ApiVersion.July21,
+    version: "2021-07",
     prefix: config.SHOPIFY_GRAPHQL_PREFIX,
   });
 

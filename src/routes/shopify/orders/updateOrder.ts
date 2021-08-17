@@ -27,7 +27,6 @@ export default async function updateOrderHandler(request: FastifyRequest, reply:
   } = request.body as any;
 
   const optometrists = {
-    "Andre Horn": "lauren@pienaarpartners.co.za",
     "Rudine Diedericks": "rudinec@mellins.co.za",
     "Bernardine Flynn": "bernardinef@mellins.co.za",
     "Inge Loubser": "ingel@mellins.co.za",
@@ -72,7 +71,7 @@ export default async function updateOrderHandler(request: FastifyRequest, reply:
     const message = {
       from: '"Mellins i-Style" online@mellins.co.za',
       replyTo: "online@mellins.co.za",
-      to: ["luzanne@pienaarpartners.co.za", "aj@pienaarconsulting.co.za", optomEmail],
+      to: ["aj@pienaarconsulting.co.za"],
       subject: `Shopify order #${orderNumber} IBT requested.`,
       html,
     };
@@ -101,7 +100,7 @@ export default async function updateOrderHandler(request: FastifyRequest, reply:
     const message = {
       from: '"Mellins i-Style" online@mellins.co.za',
       replyTo: "online@mellins.co.za",
-      to: ["luzanne@pienaarpartners.co.za", "aj@pienaarconsulting.co.za", optomEmail],
+      to: ["aj@pienaarconsulting.co.za"],
       subject: `Shopify order #${orderNumber} refund requested.`,
       html,
     };
@@ -130,7 +129,7 @@ export default async function updateOrderHandler(request: FastifyRequest, reply:
     const message = {
       from: '"Mellins i-Style" online@mellins.co.za',
       replyTo: "online@mellins.co.za",
-      to: ["colette@pienaarpartners.co.za", "aj@pienaarconsulting.co.za", optomEmail],
+      to: ["aj@pienaarconsulting.co.za"],
       subject: `Shopify order #${orderNumber} voucher requested`,
       html,
     };
