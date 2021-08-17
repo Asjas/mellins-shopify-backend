@@ -32,8 +32,8 @@ export default function customersWebhooks(fastify: FastifyInstance, _opts, done)
       last_name: customerData.last_name,
       email: customerData.email,
       id_number: customerData.id_number,
-      medical_aid: customerData.metafields.edges[0].node.value,
-      ma_number: customerData.metafields.edges[1].node.value,
+      medical_aid: customerData?.metafields?.edges[0]?.node?.value,
+      ma_number: customerData?.metafields?.edges[1]?.node?.value,
       tags: customerData.tags,
     };
 
@@ -68,8 +68,8 @@ export default function customersWebhooks(fastify: FastifyInstance, _opts, done)
       last_name: updatedCustomer.last_name,
       email: updatedCustomer.email,
       id_number: updatedCustomer.id_number,
-      medical_aid: updatedCustomer.metafields.edges[0].node.value,
-      ma_number: updatedCustomer.metafields.edges[1].node.value,
+      medical_aid: updatedCustomer?.metafields?.edges[0]?.node?.value,
+      ma_number: updatedCustomer?.metafields?.edges[1]?.node?.value,
       tags: updatedCustomer.tags,
     };
 
