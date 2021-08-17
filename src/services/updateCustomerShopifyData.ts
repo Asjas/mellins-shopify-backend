@@ -14,6 +14,7 @@ export default async function updateCustomerShopifyData(
   ma_number,
 ) {
   try {
+    console.log(id, first_name, last_name, email, id_number, medical_aid, ma_number);
     const variables = {
       input: {
         id: `gid://shopify/Customer/${id}`,
