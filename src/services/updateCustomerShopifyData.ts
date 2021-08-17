@@ -2,7 +2,55 @@
 
 import shopifyClient from "../api/shopifyClient";
 
+import getCustomerFromShopify from "./getCustomerFromShopify";
+
 import config from "../config";
+
+const calculateMetafields = (data) => {
+  const { metafields } = data.customer;
+
+  if (metafields.edges.length === 0) return null;
+
+  const metafieldObject = metafields.edges.reduce((accum, currentValue) => {
+    const { id, key, value } = currentValue.node;
+    const metafieldData = { id, key, value };
+
+    accum.push(metafieldData);
+    return accum;
+  }, []);
+
+  return metafieldObject;
+};
+
+const calculateCustomerVariables = (metafields, inputData) => {
+  const customerVariables = inputData.map((input) => {
+    const obj: any = {};
+
+    const metafield = metafields?.filter((field) => {
+      if (field.key === input[0]) {
+        return field;
+      }
+
+      return null;
+    });
+
+    if (metafield && metafield[0]?.id) {
+      obj.id = metafield[0].id;
+    }
+
+    obj.namespace = "MEDICAL_AID";
+    obj.type = "single_line_text_field";
+
+    const [key, value] = input;
+
+    obj.key = key;
+    obj.value = value;
+
+    return obj;
+  });
+
+  return customerVariables;
+};
 
 export default async function updateCustomerShopifyData(
   id,
@@ -14,7 +62,21 @@ export default async function updateCustomerShopifyData(
   ma_number,
 ) {
   try {
-    console.log(id, first_name, last_name, email, id_number, medical_aid, ma_number);
+    const customer = await getCustomerFromShopify(id);
+
+    console.log({ customer });
+
+    const metafields = calculateMetafields(customer);
+
+    console.log({ metafields });
+
+    const metafieldsVariables = calculateCustomerVariables(metafields, [
+      ["Medical Aid", "Discovery"],
+      ["MA Number", "123456"],
+    ]);
+
+    console.log(metafieldsVariables);
+
     const variables = {
       input: {
         id: `gid://shopify/Customer/${id}`,
@@ -22,20 +84,7 @@ export default async function updateCustomerShopifyData(
         lastName: last_name,
         email,
         note: id_number,
-        metafields: [
-          {
-            namespace: "MEDICAL_AID",
-            valueType: "STRING",
-            key: "Medical Aid",
-            value: medical_aid ?? "",
-          },
-          {
-            namespace: "MEDICAL_AID",
-            valueType: "STRING",
-            key: "MA Number",
-            value: ma_number ?? "",
-          },
-        ],
+        metafields: metafieldsVariables,
       },
     };
 
