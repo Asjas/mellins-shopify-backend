@@ -1,6 +1,7 @@
 import { FastifyInstance, FastifyRequest, FastifyReply } from "fastify";
 
 import { createInvoice } from "../../../../services/createInvoice";
+import getCustomerFromShopify from "../../../../services/getCustomerFromShopify";
 
 import { customerInvoice } from "../../../../mjml/customerInvoice";
 
@@ -23,7 +24,7 @@ export default function ordersWebhooks(fastify: FastifyInstance, _opts, done) {
 
       const {
         id: orderId,
-        customer: { first_name: firstName, last_name: lastName, email: emailAddress },
+        customer: { id, first_name: firstName, last_name: lastName, email: emailAddress },
         order_number: orderNumber,
         subtotal_price: subtotalPrice,
         line_items: lineItems,
@@ -31,6 +32,15 @@ export default function ordersWebhooks(fastify: FastifyInstance, _opts, done) {
         total_discounts: totalDiscounts,
         billing_address: { name, address1, address2, city, zip, province },
       } = request.body as any;
+
+      const shopifyCustomer = await getCustomerFromShopify(id);
+
+      console.log("shopifyCustomer", JSON.stringify(shopifyCustomer));
+
+      const shopifyMAFields = {
+        medical_aid: shopifyCustomer?.metafields?.edges[0]?.node?.value,
+        ma_number: shopifyCustomer?.metafields?.edges[1]?.node?.value,
+      };
 
       const invoice = {
         mellins: {
@@ -42,6 +52,7 @@ export default function ordersWebhooks(fastify: FastifyInstance, _opts, done) {
           postal_code: 9301,
         },
         shipping: {
+          medical: `${shopifyMAFields.medical_aid ?? ""} ${shopifyMAFields.ma_number ?? ""}`,
           name,
           address: address1,
           suburb: address2,

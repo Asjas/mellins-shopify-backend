@@ -25,6 +25,8 @@ function generateHeader(doc, invoice) {
 
   doc
     .fontSize(12)
+    .text(invoice.mellins.medical, 400, 40, { align: "right" })
+    .fontSize(12)
     .text(invoice.mellins.name, 400, 60, { align: "right" })
     .fontSize(12)
     .text(invoice.mellins.address, 399, 73, { align: "right" })
@@ -58,6 +60,8 @@ function generateCustomerInformation(doc, invoice) {
     .text("Practice Number:", 50, customerInformationTop + 45)
     .text("0824151", 150, customerInformationTop + 45)
 
+    .font("Helvetica-Bold")
+    .text(invoice.shipping.medical, 300, customerInformationTop, { align: "right" })
     .font("Helvetica-Bold")
     .text(invoice.shipping.name, 300, customerInformationTop, { align: "right" })
     .font("Helvetica")
