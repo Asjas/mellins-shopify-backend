@@ -119,7 +119,7 @@ async function createServer(config: Config) {
 
   await server.register(AutoLoad, {
     dir: join(__dirname, "routes"),
-    dirNameRoutePrefix: false,
+    dirNameRoutePrefix: true,
   });
 
   return server;

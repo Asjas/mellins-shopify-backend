@@ -45,9 +45,7 @@ export default async function tagContactLensOrder(id: number, updatedTags) {
 
     const parsedData = JSON.parse(data);
 
-    console.log("customer updated data", parsedData);
-
-    return parsedData;
+    return parsedData.data.orderUpdate;
   } catch (err) {
     console.error(err);
   }

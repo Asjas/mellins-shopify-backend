@@ -45,9 +45,7 @@ export default async function getOrderMetafields(id: number) {
 
     const parsedData = JSON.parse(data);
 
-    console.log("customer updated data", parsedData);
-
-    return parsedData;
+    return parsedData.data.order;
   } catch (err) {
     console.error(err);
   }

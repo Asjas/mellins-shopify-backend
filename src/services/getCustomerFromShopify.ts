@@ -39,8 +39,6 @@ export default async function getCustomerFromShopify(id: number) {
 
     const parsedData = JSON.parse(data);
 
-    console.log("fetched customer data", parsedData);
-
     return parsedData.data.customer;
   } catch (err) {
     console.error(err);

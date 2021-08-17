@@ -50,8 +50,6 @@ export default async function updateCustomerShopifyData(id, first_name, last_nam
 
     const parsedData = JSON.parse(data);
 
-    console.log("customer updated data", parsedData);
-
     return parsedData.data.customerUpdate;
   } catch (err) {
     console.error(err);

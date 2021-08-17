@@ -48,9 +48,7 @@ async function updateCustomerShopifyTags(id: number) {
 
     const parsedData = JSON.parse(data);
 
-    console.log("customer updated data", parsedData);
-
-    return parsedData;
+    return parsedData.data.customerUpdate;
   } catch (error) {
     console.error(error);
   }
