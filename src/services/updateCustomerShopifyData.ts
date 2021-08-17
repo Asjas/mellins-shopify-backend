@@ -88,6 +88,7 @@ export default async function updateCustomerShopifyData(
             last_name: lastName
             email
             id_number: note
+            tags
             metafields(namespace: "MEDICAL_AID", first: 2) {
               edges {
                 node {
