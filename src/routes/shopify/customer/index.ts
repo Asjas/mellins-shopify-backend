@@ -70,8 +70,8 @@ export default function customersWebhooks(fastify: FastifyInstance, _opts, done)
       last_name: updatedCustomer.last_name,
       email: updatedCustomer.email,
       id_number: updatedCustomer.id_number,
-      medical_aid: updatedCustomer.metafields.edges[0].value,
-      ma_number: updatedCustomer.metafields.edges[1].value,
+      medical_aid: updatedCustomer.metafields.edges[0].node.value,
+      ma_number: updatedCustomer.metafields.edges[1].node.value,
       tags: updatedCustomer.tags,
     };
 
