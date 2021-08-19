@@ -13,7 +13,8 @@ export const calculateDefaultValues = (metafields) => {
 };
 
 export const getOptomName = async (data) => {
-  if (!data.metafields) return null;
+  console.log("get optom name: data", data);
+  if (data.metafields.edges.length === 0) return null;
 
   const metafieldObject = await calculateDefaultValues(data.metafields);
 
@@ -25,7 +26,7 @@ export const getOptomName = async (data) => {
 };
 
 export const getOrderApproved = async (data) => {
-  if (!data.metafields) return null;
+  if (data.metafields.edges.length === 0) return null;
 
   const metafieldObject = await calculateDefaultValues(data.metafields);
 
@@ -37,7 +38,7 @@ export const getOrderApproved = async (data) => {
 };
 
 export const getOrderStatusReady = async (data) => {
-  if (!data.metafields) return null;
+  if (data.metafields.edges.length === 0) return null;
 
   const metafieldObject = await calculateDefaultValues(data.metafields);
 
@@ -52,7 +53,7 @@ export const getOrderStatusReady = async (data) => {
 };
 
 export const getIBTRequested = async (data) => {
-  if (!data.metafields) return null;
+  if (data.metafields.edges.length === 0) return null;
 
   const metafieldObject = await calculateDefaultValues(data.metafields);
 
@@ -64,7 +65,7 @@ export const getIBTRequested = async (data) => {
 };
 
 export const getRefundRequested = async (data) => {
-  if (!data.metafields) return null;
+  if (data.metafields.edges.length === 0) return null;
 
   const metafieldObject = await calculateDefaultValues(data.metafields);
 
@@ -76,7 +77,7 @@ export const getRefundRequested = async (data) => {
 };
 
 export const getVoucherRequested = async (data) => {
-  if (!data.metafields) return null;
+  if (data.metafields.edges.length === 0) return null;
 
   const metafieldObject = await calculateDefaultValues(data.metafields);
 
