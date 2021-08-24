@@ -77,7 +77,7 @@ export default function ordersWebhooks(fastify: FastifyInstance, _opts, done) {
         const message = {
           from: '"Mellins i-Style" online@mellins.co.za',
           replyTo: "online@mellins.co.za",
-          to: ["luzanne@pienaarpartners.co.za", optomEmail, "aj@pienaarconsulting.co.za"],
+          to: ["luzanne@pienaarpartners.co.za", optomEmail],
           subject: `Shopify order #${orderNumber} IBT requested.`,
           html,
         };
@@ -107,7 +107,7 @@ export default function ordersWebhooks(fastify: FastifyInstance, _opts, done) {
         const message = {
           from: '"Mellins i-Style" online@mellins.co.za',
           replyTo: "online@mellins.co.za",
-          to: ["luzanne@pienaarpartners.co.za", optomEmail, "aj@pienaarconsulting.co.za"],
+          to: ["luzanne@pienaarpartners.co.za", optomEmail],
           subject: `Shopify order #${orderNumber} refund requested.`,
           html,
         };
@@ -137,7 +137,7 @@ export default function ordersWebhooks(fastify: FastifyInstance, _opts, done) {
         const message = {
           from: '"Mellins i-Style" online@mellins.co.za',
           replyTo: "online@mellins.co.za",
-          to: ["colette@pienaarpartners.co.za", optomEmail, "aj@pienaarconsulting.co.za"],
+          to: ["colette@pienaarpartners.co.za", optomEmail],
           subject: `Shopify order #${orderNumber} voucher requested`,
           html,
         };
@@ -183,7 +183,7 @@ export default function ordersWebhooks(fastify: FastifyInstance, _opts, done) {
         const message = {
           from: '"Mellins i-Style" online@mellins.co.za',
           replyTo: "online@mellins.co.za",
-          to: ["lauren@pienaarpartners.co.za", optomName, "aj@pienaarconsulting.co.za"],
+          to: ["lauren@pienaarpartners.co.za", optomName],
           subject: `Shopify Contact Lens order #${orderNumber} ready for collection arrangement`,
           html,
         };

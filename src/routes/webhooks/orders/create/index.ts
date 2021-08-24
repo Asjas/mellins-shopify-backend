@@ -54,12 +54,7 @@ export default function ordersWebhooks(fastify: FastifyInstance, _opts, done) {
         const message = {
           from: '"Mellins i-Style" online@mellins.co.za',
           replyTo: "online@mellins.co.za",
-          to: [
-            "rudinec@mellins.co.za",
-            "bernardinef@mellins.co.za",
-            "ingel@mellins.co.za",
-            "aj@pienaarconsulting.co.za",
-          ],
+          to: ["rudinec@mellins.co.za", "bernardinef@mellins.co.za", "ingel@mellins.co.za"],
           subject: `Mellins i-Style - Shopify Contact Lens Order #${emailContents.orderNumber}`,
           html,
         };
