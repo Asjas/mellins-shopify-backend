@@ -37,6 +37,11 @@ export default function ordersWebhooks(fastify: FastifyInstance, _opts, done) {
       };
 
       const orderMetafieldsData = await getOrderMetafields(orderId);
+
+      if (orderMetafieldsData.tags.includes(SHOPIFY_TAGS.INTERNAL_ORDER)) {
+        return reply.status(200).send();
+      }
+
       const optomName = await getOptomName(orderMetafieldsData);
       const isRefund = await getRefundRequested(orderMetafieldsData);
       const isIBT = await getIBTRequested(orderMetafieldsData);
@@ -55,10 +60,6 @@ export default function ordersWebhooks(fastify: FastifyInstance, _opts, done) {
       console.log({ isVoucher });
       console.log({ isOrderApproved });
       console.log({ isOrderReady });
-
-      if (orderMetafieldsData.tags.includes(SHOPIFY_TAGS.INTERNAL_ORDER)) {
-        return reply.status(200).send();
-      }
 
       if (isIBT && !orderMetafieldsData.tags.includes(SHOPIFY_TAGS.IBT_REQUESTED)) {
         const updatedTags = [...orderMetafieldsData.tags, SHOPIFY_TAGS.IBT_REQUESTED];
