@@ -2,7 +2,7 @@ import { useEffect, useState, useCallback } from "react";
 import { Page, Layout, TextField, Form, FormLayout, Button } from "@shopify/polaris";
 import { useRouter } from "next/router";
 
-import Nav from "../../components/Nav";
+import Nav from "../../../components/Nav";
 
 function CustomerMAPage() {
   const router = useRouter();
