@@ -6,6 +6,7 @@ import createPersistedState from "use-persisted-state";
 import PageLoadingSpinner from "../components/PageLoadingSpinner";
 import OrdersTable from "../components/OrdersTable";
 import OrdersToggle from "../components/OrdersToggle";
+import Nav from "../components/Nav";
 
 const useCounterState = createPersistedState("orders");
 
@@ -197,7 +198,10 @@ function Home() {
     <Page fullWidth>
       <Layout>
         <Layout.Section>
-          <h1 className="mt-6 text-3xl font-bold mb-14">Contact Lens Orders</h1>
+          <header>
+            <Nav />
+            <h1 className="mt-6 text-3xl font-bold mb-14">Contact Lens Orders</h1>
+          </header>
           <div className="flex mb-8">
             <TextField label="Search single order" placeholder="1158" value={orderFieldValue} onChange={handleChange} />
             <div className="self-end h-12 mb-3 ml-4">

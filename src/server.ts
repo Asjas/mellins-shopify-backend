@@ -2,13 +2,13 @@ import AutoLoad from "fastify-autoload";
 import Fastify, { FastifyServerOptions } from "fastify";
 import FastifyCookie from "fastify-cookie";
 import FastifyCors from "fastify-cors";
-import FastifyFavicon from "fastify-favicon";
 import FastifyHealthcheck from "fastify-healthcheck";
 import FastifyHelmet from "fastify-helmet";
 import FastifyNext from "fastify-nextjs";
 import FastifyNodemailer from "fastify-nodemailer";
 import FastifySession from "fastify-session";
 import ShopifyGraphQLProxy, { ApiVersion } from "fastify-shopify-graphql-proxy";
+import FastifyStatic from "fastify-static";
 import { join } from "path";
 
 import type { Config } from "./config";
@@ -58,19 +58,18 @@ async function createServer(config: Config) {
   });
 
   await server.register((fastify, _opts, done) => {
-    // @ts-ignore
     fastify.next("/");
-    // @ts-ignore
-    fastify.next("/contact-lens/:id");
-    // @ts-ignore
-    fastify.next("/customers/verify");
-    // @ts-ignore
     fastify.next("/orders/invoice");
+    fastify.next("/contact-lens/:id");
+    fastify.next("/customers/ma-details/:id");
+    fastify.next("/customers/verify/:id");
 
     done();
   });
 
-  await server.register(FastifyFavicon);
+  await server.register(FastifyStatic, {
+    root: join(__dirname, "/static"),
+  });
 
   await server.register(FastifyHealthcheck);
 

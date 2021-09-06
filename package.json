@@ -53,6 +53,7 @@
     "fastify-plugin": "3.0.0",
     "fastify-session": "5.2.1",
     "fastify-shopify-graphql-proxy": "0.14.0",
+    "fastify-static": "^4.2.3",
     "fluent-json-schema": "3.0.1",
     "graphql": "15.5.1",
     "lodash.isequal": "4.5.0",

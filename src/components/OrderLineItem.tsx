@@ -1,7 +1,9 @@
 export default function OrderLineItem({ item }) {
   return (
     <div>
-      <p className="pb-3 mt-6 text-lg leading-6 text-gray-900">{item?.node?.name}</p>
+      <p className="pb-3 mt-6 text-lg leading-6 text-gray-900">
+        {item?.node?.quantity} x {item?.node?.name}
+      </p>
       {item?.node?.vendor && <p className="leading-6 text-gray-400 text-tiny">Vendor: {item.node.vendor}</p>}
       {item?.node?.customAttributes?.map((customAttribute) => (
         <p key={customAttribute.key} className="pt-1 text-sm leading-8 text-gray-500">
