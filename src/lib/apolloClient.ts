@@ -7,7 +7,10 @@ function createApolloClient() {
   return new ApolloClient({
     ssrMode: typeof window === "undefined",
     link: new HttpLink({
-      uri: "http://localhost:4000/shopify/graphql",
+      uri:
+        process.env.NODE_ENV === "production"
+          ? "http://shopify2.mellins-backend.co.za/shopify/graphql"
+          : "http://localhost:4000/shopify/graphql",
       credentials: "same-origin",
     }),
     cache: new InMemoryCache({}),
