@@ -9,7 +9,7 @@ function createApolloClient() {
     link: new HttpLink({
       uri:
         process.env.NODE_ENV === "production"
-          ? "http://shopify2.mellins-backend.co.za/shopify/graphql"
+          ? "https://shopify2.mellins-backend.co.za/shopify/graphql"
           : "http://localhost:4000/shopify/graphql",
       credentials: "same-origin",
     }),
