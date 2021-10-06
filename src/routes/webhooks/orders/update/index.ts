@@ -50,17 +50,6 @@ export default function ordersWebhooks(fastify: FastifyInstance, _opts, done) {
       const isOrderReady = await getOrderStatusReady(orderMetafieldsData);
       const optomEmail = optometrists[optomName];
 
-      console.log("incoming order update webhook triggered");
-      console.log(`${firstName} ${lastName}`);
-      console.log("orderMetafieldsData", JSON.stringify(orderMetafieldsData.tags));
-      console.log({ optomName });
-      console.log({ optomEmail });
-      console.log({ isIBT });
-      console.log({ isRefund });
-      console.log({ isVoucher });
-      console.log({ isOrderApproved });
-      console.log({ isOrderReady });
-
       if (isIBT && !orderMetafieldsData.tags.includes(SHOPIFY_TAGS.IBT_REQUESTED)) {
         const updatedTags = [...orderMetafieldsData.tags, SHOPIFY_TAGS.IBT_REQUESTED];
         await tagContactLensOrder(orderId, updatedTags);

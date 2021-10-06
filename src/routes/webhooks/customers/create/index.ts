@@ -8,7 +8,7 @@ interface IBody {
   note: string;
 }
 
-export default function customersWebhooks(fastify: FastifyInstance, _opts, done) {
+export default function customersCreateWebhooks(fastify: FastifyInstance, _opts, done) {
   fastify.post<{ Body: IBody }>("/", async (request, reply) => {
     const { id, note: idNumber } = request.body;
 
