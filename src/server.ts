@@ -60,8 +60,8 @@ async function createServer(config: Config) {
   await server.register((fastify, _opts, done) => {
     fastify.next("/");
     fastify.next("/orders/invoice");
+    fastify.next("/customers/ma-details");
     fastify.next("/contact-lens/:id");
-    fastify.next("/customers/ma-details/:id");
     fastify.next("/customers/verify/:id");
 
     done();
