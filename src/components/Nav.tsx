@@ -13,9 +13,6 @@ export default function Nav() {
         <Link href="/">
           <a className="px-4 py-2 mr-4 text-lg text-white shadow-md bg-primary hover:bg-black border-lg">Orders</a>
         </Link>
-        <Link href="/invoice">
-          <a className="px-4 py-2 text-lg text-white shadow-md bg-primary hover:bg-black border-lg">Invoices</a>
-        </Link>
       </div>
     </nav>
   );
