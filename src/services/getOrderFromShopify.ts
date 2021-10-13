@@ -50,6 +50,7 @@ export default async function getOrderFromShopify(order: number) {
               node {
                 id
                 name
+                sku
                 quantity
                 vendor
                 originalUnitPriceSet {
