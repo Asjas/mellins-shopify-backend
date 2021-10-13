@@ -18,6 +18,7 @@ export default function invoiceWebhooks(fastify: FastifyInstance, _opts, done) {
       const updatedLineItems = shopifyOrder.lineItems.edges.map((lineItem) => {
         const item = {
           id: lineItem.node.id,
+          sku: lineItem.item.sku,
           name: lineItem.node.name,
           quantity: lineItem.node.quantity,
           vendor: lineItem.node.vendor,
