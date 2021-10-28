@@ -66,7 +66,7 @@ export default function ordersWebhooks(fastify: FastifyInstance, _opts, done) {
         const message = {
           from: '"Mellins i-Style" online@mellins.co.za',
           replyTo: "online@mellins.co.za",
-          to: ["luzanne@pienaarpartners.co.za", optomEmail],
+          to: ["marieta@pienaarpartners.co.za", optomEmail],
           subject: `Shopify order #${orderNumber} IBT requested.`,
           html,
         };
@@ -76,7 +76,7 @@ export default function ordersWebhooks(fastify: FastifyInstance, _opts, done) {
           if (err) throw new Error(err);
 
           fastify.log.info(info);
-          fastify.log.info(`Contact Lens order #${orderNumber} refund request email emailed to Luzanne.`);
+          fastify.log.info(`Contact Lens order #${orderNumber} refund request email emailed to Marieta.`);
         });
       }
 
@@ -96,7 +96,7 @@ export default function ordersWebhooks(fastify: FastifyInstance, _opts, done) {
         const message = {
           from: '"Mellins i-Style" online@mellins.co.za',
           replyTo: "online@mellins.co.za",
-          to: ["luzanne@pienaarpartners.co.za", optomEmail],
+          to: ["marieta@pienaarpartners.co.za", optomEmail],
           subject: `Shopify order #${orderNumber} refund requested.`,
           html,
         };
@@ -106,7 +106,7 @@ export default function ordersWebhooks(fastify: FastifyInstance, _opts, done) {
           if (err) throw new Error(err);
 
           fastify.log.info(info);
-          fastify.log.info(`Contact Lens order #${orderNumber} refund request email emailed to Luzanne.`);
+          fastify.log.info(`Contact Lens order #${orderNumber} refund request email emailed to Marieta.`);
         });
       }
 
