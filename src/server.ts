@@ -119,6 +119,14 @@ async function createServer(config: Config) {
 
   // @ts-ignore
   await server.register(ShopifyGraphQLProxy, {
+    scopes: [
+      "read_customers",
+      "write_customers",
+      "read_order_edits",
+      "write_order_edits",
+      "read_orders",
+      "write_orders",
+    ],
     accessMode: "online",
     shop: config.SHOPIFY_HOST,
     password: config.SHOPIFY_ACCESS_TOKEN,
