@@ -8,6 +8,7 @@ import FastifyNext from "fastify-nextjs";
 import FastifyNodemailer from "fastify-nodemailer";
 import FastifySession from "fastify-session";
 import ShopifyGraphQLProxy, { ApiVersion } from "fastify-shopify-graphql-proxy";
+import ShopifyAuth from "fastify-shopify-auth";
 import FastifyStatic from "fastify-static";
 import { join } from "path";
 
@@ -108,8 +109,17 @@ async function createServer(config: Config) {
     },
   });
 
+  //@ts-ignore
+  await server.register(ShopifyAuth, {
+    shop: "online-mellins.myshopify.com",
+    host: "https://shopify2.mellins-backend.com",
+    apiKey: "b3e0198d258f45dd9be7b3d88f808fa4",
+    secret: "541bfabe655ec95ba50401da57f80a83",
+  });
+
   // @ts-ignore
   await server.register(ShopifyGraphQLProxy, {
+    accessMode: "online",
     shop: config.SHOPIFY_HOST,
     password: config.SHOPIFY_ACCESS_TOKEN,
     version: "2021-07",
