@@ -113,8 +113,8 @@ async function createServer(config: Config) {
   await server.register(ShopifyAuth, {
     shop: "online-mellins.myshopify.com",
     host: "https://shopify2.mellins-backend.com",
-    apiKey: "b3e0198d258f45dd9be7b3d88f808fa4",
-    secret: "541bfabe655ec95ba50401da57f80a83",
+    apiKey: "4241b7cfb7004e0143ba934a4abac7c9",
+    secret: "4241b7cfb7004e0143ba934a4abac7c9",
   });
 
   // @ts-ignore
