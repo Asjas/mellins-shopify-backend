@@ -111,14 +111,6 @@ async function createServer(config: Config) {
 
   //@ts-ignore
   await server.register(ShopifyAuth, {
-    shop: "online-mellins.myshopify.com",
-    host: "https://shopify2.mellins-backend.co.za",
-    apiKey: "4241b7cfb7004e0143ba934a4abac7c9",
-    secret: "4241b7cfb7004e0143ba934a4abac7c9",
-  });
-
-  // @ts-ignore
-  await server.register(ShopifyGraphQLProxy, {
     scopes: [
       "read_customers",
       "write_customers",
@@ -127,7 +119,15 @@ async function createServer(config: Config) {
       "read_orders",
       "write_orders",
     ],
-    accessMode: "online",
+    accessMode: "offline",
+    shop: "online-mellins.myshopify.com",
+    host: "https://shopify2.mellins-backend.co.za",
+    apiKey: "4241b7cfb7004e0143ba934a4abac7c9",
+    secret: "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",
+  });
+
+  // @ts-ignore
+  await server.register(ShopifyGraphQLProxy, {
     shop: config.SHOPIFY_HOST,
     password: config.SHOPIFY_ACCESS_TOKEN,
     version: "2021-07",
