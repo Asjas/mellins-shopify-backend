@@ -16,7 +16,7 @@ function MyApp({ Component, pageProps }: AppProps) {
   const host = Buffer.from(`${shop}/admin`).toString("base64");
 
   const config = {
-    apiKey: "b3e0198d258f45dd9be7b3d88f808fa4",
+    apiKey: "4241b7cfb7004e0143ba934a4abac7c9",
     host,
   };
 
