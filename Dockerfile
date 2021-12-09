@@ -1,9 +1,9 @@
 FROM node:16.6.1-alpine
 
-EXPOSE 3000
+EXPOSE 4000
 
 ENV NODE_ENV production
-ENV PORT 3000
+ENV PORT 4000
 
 RUN mkdir /app && chown -R node:node /app
 WORKDIR /app
