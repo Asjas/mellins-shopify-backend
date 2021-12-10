@@ -1,21 +1,8 @@
 version: "2.4"
 
 services:
-  db:
-    container_name: db
-    image: postgres:13.3-alpine
-    ports:
-      - ${FASTIFY_PORT}:5432
-    volumes:
-      - db-data:/var/lib/postgresql
+  mellins-shopify-backend:
+    container_name: mellins-shopify-backend
+    image: asjas/mellins-shopify-backend:latest
     restart: always
-    environment:
-      POSTGRES_USER: ${FASTIFY_DB_USER}
-      POSTGRES_PASSWORD: ${FASTIFY_DB_PASS}
-      POSTGRES_DB: ${FASTIFY_DB}
-
-volumes:
-  redis-data:
-    external: false
-  db-data:
-    external: false
+    network_mode: "host"
