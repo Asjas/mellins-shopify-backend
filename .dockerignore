@@ -10,5 +10,3 @@ test/
 .prettierrc.js
 .taprc
 .DS_Store
-.env
-.env.sample
