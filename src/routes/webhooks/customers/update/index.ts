@@ -23,10 +23,12 @@ export default function customersUpdateWebhooks(fastify: FastifyInstance, _opts,
       return reply.status(200).send();
     }
 
-    const isMellinsPatient = await getCustomerFromAtlasDb(idNumber.trim());
+    if (idNumber) {
+      const isMellinsPatient = await getCustomerFromAtlasDb(idNumber.trim());
 
-    if (isMellinsPatient) {
-      await updateCustomerShopifyTags(id);
+      if (isMellinsPatient) {
+        await updateCustomerShopifyTags(id);
+      }
     }
 
     // reply to shopify to stop the webhook from spamming
