@@ -54,7 +54,7 @@ function generateCustomerInformation(doc, invoice) {
     .text(invoice.invoice_nr, 150, customerInformationTop)
     .font("Helvetica")
     .text("Invoice Date:", 50, customerInformationTop + 15)
-    .text(format(new Date(), "dd/MM/yyyy"), 150, customerInformationTop + 15)
+    .text(format(new Date(invoice.date), "dd/MM/yyyy"), 150, customerInformationTop + 15)
     .text("VAT:", 50, customerInformationTop + 30)
     .text("4140189129", 150, customerInformationTop + 30)
     .text("Practice Number:", 50, customerInformationTop + 45)

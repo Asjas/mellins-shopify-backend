@@ -66,6 +66,7 @@ export default function invoiceWebhooks(fastify: FastifyInstance, _opts, done) {
         discount: shopifyOrder.totalDiscountsSet.presentmentMoney.amount,
         paid: shopifyOrder.totalPriceSet.presentmentMoney.amount,
         invoice_nr: shopifyOrder.name,
+        date: shopifyOrder.createdAt,
       };
 
       const generatedInvoice = createInvoice(invoice);

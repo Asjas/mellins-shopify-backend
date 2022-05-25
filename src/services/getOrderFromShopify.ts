@@ -16,6 +16,7 @@ export default async function getOrderFromShopify(order: number) {
           id
           name
           tags
+          createdAt
           subtotalPriceSet {
             presentmentMoney {
               amount
