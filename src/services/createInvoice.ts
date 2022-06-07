@@ -103,7 +103,16 @@ function generateInvoiceTable(doc, invoice) {
       item.title = item.title.replace(") \r\n OS (", ")\nOS (");
     }
 
-    if (item.title.includes("Biofinity") ||  item.title.includes("MyDay") || item.title.includes("Proclear") || item.title.includes("Acuvue")) {
+    if (
+      item.title.includes("Biofinity") ||
+      item.title.includes("Clarity") ||
+      item.title.includes("Avaira") ||
+      item.title.includes("Frequency") ||
+      item.title.includes("MyDay") ||
+      item.title.includes("Zero") ||
+      item.title.includes("Proclear") ||
+      item.title.includes("Acuvue")
+    ) {
       ICD = "Z97.3";
     }
 
